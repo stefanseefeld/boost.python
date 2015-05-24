@@ -2,19 +2,17 @@
 # Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-# Specify the path to the Boost project.  If you move this project,
-# adjust this path to refer to the Boost root directory.
-use-project boost 
-  : ../../.. ;
+import python ;
 
-# Set up the project-wide requirements that everything uses the
-# boost_python library from the project whose global ID is
-# /boost/python.
-project
-  : requirements <library>/boost/python//boost_python 
-                 <implicit-dependency>/boost//headers 
-  : usage-requirements <implicit-dependency>/boost//headers 
-  ;
+if ! [ python.configured ]
+{
+  ECHO "warning: no Python configured in user-config.jam" ;
+  ECHO "warning: will use default configuration" ;
+  using python ;
+}
+
+lib boost_python ;
+project : requirements <library>boost_python ;
 
 # Declare the three extension modules.  You can specify multiple
 # source files after the colon separated by spaces.

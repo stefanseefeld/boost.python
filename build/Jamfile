@@ -6,17 +6,18 @@ import os ;
 import indirect ;
 import modules ;
 import feature ;
-
+import boost ;
 import python ;
+import package ;
 
-if ! [ python.configured ] && ! ( --without-python in  [ modules.peek : ARGV ] )
+if ! [ python.configured ]
 {
     # Attempt default configuration of python
     import toolset : using ;
     using python ;
 }
 
-if [ python.configured ] || ( --without-python in  [ modules.peek : ARGV ] )
+if [ python.configured ]
 {
     alias config-warning ;
 }
@@ -64,9 +65,7 @@ rule tag ( name : type ? : property-set )
         }
     }
     
-    # forward to the boost tagging rule
-    return  [ indirect.call $(BOOST_JAMROOT_MODULE)%$(BOOST_JAMROOT_MODULE).tag 
-                $(result) : $(type) : $(property-set) ] ;
+    return [ boost.tag_system $(name) : $(type) : $(property-set) ] ;
 }
 
 rule cond ( test ? : yes * : no * ) { if $(test) { return $(yes) ; } else { return $(no) ; } }
@@ -149,3 +148,4 @@ if $(py3-version)
     lib_boost_python yes ;
     boost-install boost_python3 ;
 }
+

@@ -1,0 +1,23 @@
+import package ;
+import path ;
+
+path-constant SELF : . ;
+
+headers = [ path.glob-tree $(SELF)/include/boost : *.hpp ] ;
+
+rule boost-install ( libraries * )
+{
+  package.install install
+    : <install-source-root>$(SELF)/include/
+    : # No binaries
+    : $(libraries)
+    : $(headers)
+  ;
+  install stage : $(libraries) : <location>$(BOOST_STAGE_LOCATE) ;
+
+  module [ CALLER_MODULE ]
+  {
+    explicit stage ;
+    explicit install ;
+  }
+}
