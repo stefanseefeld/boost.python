@@ -1,0 +1,2141 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<book xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" id="python" rev:last-revision="$Date: 2016/08/05 20:22:59 $">
+  <title>Boost.Python</title>
+  <bookinfo>
+    <authorgroup>
+    <author>
+      <firstname>David</firstname> <surname>Abrahams</surname>
+    </author>
+    <author>
+      <firstname>Stefan</firstname> <surname>Seefeld</surname>
+    </author>
+    </authorgroup>
+    <copyright>
+      <year>2002</year> <year>2003</year> <year>2004</year> <year>2005</year> <year>2006</year>
+      <year>2007</year> <year>2008</year> <year>2009</year> <year>2010</year> <year>2011</year>
+      <year>2012</year> <year>2013</year> <year>2014</year> <year>2015</year> <holder>David
+      Abrahams, Stefan Seefeld</holder>
+    </copyright>
+    <legalnotice id="python.legal">
+      <para>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <ulink url="http://www.boost.org/LICENSE_1_0.txt">http://www.boost.org/LICENSE_1_0.txt</ulink>)
+      </para>
+    </legalnotice>
+    <bookpurpose>
+      Reflects C++ classes and functions into Python
+    </bookpurpose>
+    <bookcategory name="category:inter-language support"/>
+  </bookinfo>
+  <bridgehead renderas="sect2" id="python.h0">
+    <phrase id="python.synopsis"/><link linkend="python.synopsis">Synopsis</link>
+  </bridgehead>
+  <para>
+    Welcome to Boost.Python, a C++ library which enables seamless interoperability
+    between C++ and the Python programming language. The library includes support
+    for:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <simpara>
+        References and Pointers
+      </simpara>
+    </listitem>
+    <listitem>
+      <simpara>
+        Globally Registered Type Coercions
+      </simpara>
+    </listitem>
+    <listitem>
+      <simpara>
+        Automatic Cross-Module Type Conversions
+      </simpara>
+    </listitem>
+    <listitem>
+      <simpara>
+        Efficient Function Overloading
+      </simpara>
+    </listitem>
+    <listitem>
+      <simpara>
+        C++ to Python Exception Translation
+      </simpara>
+    </listitem>
+    <listitem>
+      <simpara>
+        Default Arguments
+      </simpara>
+    </listitem>
+    <listitem>
+      <simpara>
+        Keyword Arguments
+      </simpara>
+    </listitem>
+    <listitem>
+      <simpara>
+        Manipulating Python objects in C++
+      </simpara>
+    </listitem>
+    <listitem>
+      <simpara>
+        Exporting C++ Iterators as Python Iterators
+      </simpara>
+    </listitem>
+    <listitem>
+      <simpara>
+        Documentation Strings
+      </simpara>
+    </listitem>
+  </itemizedlist>
+  <para>
+    The development of these features was funded in part by grants to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Boost</phrase> <phrase role="identifier">Consulting</phrase></computeroutput>
+    from the <ulink url="http://www.llnl.gov">Lawrence Livermore National Laboratories</ulink>
+    and by the <ulink url="http://cci.lbl.gov">Computational Crystallography Initiative</ulink>
+    at Lawrence Berkeley National Laboratories.
+  </para>
+  <section id="python.contents">
+    <title><link linkend="python.contents">Contents</link></title>
+    <itemizedlist>
+      <listitem>
+        <simpara>
+          <ulink url="tutorial/index.html">Tutorial</ulink>
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          <link linkend="building">Building and Testing</link>
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          <ulink url="reference/index.html">Reference Manual</ulink>
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          <link linkend="configuration">Configuration Information</link>
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          <link linkend="glossary">Glossary</link>
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          <link linkend="support">Support Resources</link>
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          <link linkend="faq">Frequently Asked Questions (FAQs)</link>
+        </simpara>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <bridgehead renderas="sect2" id="python.h1">
+    <phrase id="python.articles"/><link linkend="python.articles">Articles</link>
+  </bridgehead>
+  <para>
+    <ulink url="article.html">Building Hybrid Systems With Boost Python</ulink>,
+    by Dave Abrahams and Ralf W. Grosse-Kunstleve
+  </para>
+  <chapter id="building" last-revision="$Date: 2016/08/05 20:22:59 $">
+    <title>Building and Testing</title>
+    <chapterinfo>
+      <authorgroup>
+      <author>
+        <firstname>David</firstname> <surname>Abrahams</surname>
+      </author>
+      </authorgroup>
+      <copyright>
+        <year>2002</year> <year>2003</year> <year>2004</year> <year>2005</year>
+        <year>2006</year> <year>2007</year> <year>2008</year> <year>2009</year>
+        <year>2010</year> <year>2011</year> <year>2012</year> <year>2013</year>
+        <year>2014</year> <year>2015</year> <holder>David Abrahams, Stefan Seefeld</holder>
+      </copyright>
+    </chapterinfo>
+    <section id="building.requirements">
+      <title><link linkend="building.requirements">Requirements</link></title>
+      <para>
+        Boost.Python requires <ulink url="http://www.python.org/2.2">Python 2.2</ulink>
+        <footnote id="building.requirements.f0">
+        <para>
+          Note that although we tested earlier versions of Boost.Python with Python
+          2.2, and we don't <emphasis role="bold">think</emphasis> we've done anything
+          to break compatibility, this release of Boost.Python may not have been
+          tested with versions of Python earlier than 2.4, so we're not 100% sure
+          that python 2.2 and 2.3 are supported.
+        </para>
+        </footnote> <emphasis role="bold">or</emphasis> <ulink url="http://www.python.org">newer</ulink>.
+      </para>
+    </section>
+    <section id="building.background">
+      <title><link linkend="building.background">Background</link></title>
+      <para>
+        There are two basic models for combining C++ and Python:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <simpara>
+            <ulink url="http://www.python.org/doc/current/ext/intro.html">extending</ulink>,
+            in which the end-user launches the Python interpreter executable and
+            imports Python “extension modules” written in C++. Think of taking
+            a library written in C++ and giving it a Python interface so Python programmers
+            can use it. From Python, these modules look just like regular Python
+            modules.
+          </simpara>
+        </listitem>
+        <listitem>
+          <simpara>
+            <ulink url="http://www.python.org/doc/current/ext/embedding.html">embedding</ulink>,
+            in which the end-user launches a program written in C++ that in turn
+            invokes the Python interpreter as a library subroutine. Think of adding
+            scriptability to an existing application.
+          </simpara>
+        </listitem>
+      </itemizedlist>
+      <para>
+        The key distinction between extending and embedding is the location of the
+        C++ <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">main</phrase><phrase role="special">()</phrase></computeroutput>
+        function: in the Python interpreter executable, or in some other program,
+        respectively. Note that even when embedding Python in another program, <ulink url="http://www.python.org/doc/current/ext/extending-with-embedding.html">extension
+        modules are often the best way to make C/C++ functionality accessible to
+        Python code</ulink>, so the use of extension modules is really at the heart
+        of both models.
+      </para>
+      <para>
+        Except in rare cases, extension modules are built as dynamically-loaded libraries
+        with a single entry point, which means you can change them without rebuilding
+        either the other extension modules or the executable containing <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">main</phrase><phrase role="special">()</phrase></computeroutput>.
+      </para>
+    </section>
+    <section id="building.no_install_quickstart">
+      <title><link linkend="building.no_install_quickstart">No-Install Quickstart</link></title>
+      <para>
+        There is no need to “install Boost” in order to get started using Boost.Python.
+        These instructions use <ulink url="http://www.boost.org/build">Boost.Build</ulink>
+        projects, which will build those binaries as soon as they're needed. Your
+        first tests may take a little longer while you wait for Boost.Python to build,
+        but doing things this way will save you from worrying about build intricacies
+        like which library binaries to use for a specific compiler configuration
+        and figuring out the right compiler options to use yourself.
+      </para>
+      <note>
+        <para>
+          Of course it's possible to use other build systems to build Boost.Python
+          and its extensions, but they are not officially supported by Boost. Moreover
+          <emphasis role="bold">99% of all “I can't build Boost.Python” problems
+          come from trying to use another build system</emphasis> without first following
+          these instructions.
+        </para>
+        <para>
+          If you want to use another system anyway, we suggest that you follow these
+          instructions, and then invoke <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput>
+          with the
+        </para>
+        <para>
+          <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">-</phrase><phrase role="identifier">a</phrase>
+          <phrase role="special">-</phrase><phrase role="identifier">o</phrase></computeroutput><emphasis>filename</emphasis>
+        </para>
+        <para>
+          options to dump the build commands it executes to a file, so you can see
+          what your alternate build system needs to do.
+        </para>
+      </note>
+      <section id="building.no_install_quickstart.basic_procedure">
+        <title><link linkend="building.no_install_quickstart.basic_procedure">Basic
+        Procedure</link></title>
+        <para>
+          1. Get Boost; see sections 1 and 2 of the Boost <ulink url="http://www.boost.org/more/getting_started/">Getting
+          Started Guide</ulink>.
+        </para>
+        <para>
+          2. Get the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput> build driver.
+          See section 5 of the Boost <ulink url="http://www.boost.org/more/getting_started/">Getting
+          Started Guide</ulink>.
+        </para>
+        <para>
+          3. cd into the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">example</phrase><phrase role="special">/</phrase><phrase role="identifier">quickstart</phrase><phrase role="special">/</phrase></computeroutput> directory of your Boost.Python installation,
+          which contains a small example project.
+        </para>
+        <para>
+          4. Invoke <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput>. Replace
+          the “<computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">stage</phrase></computeroutput>“ argument
+          from the example invocation from section 5 of the Boost <ulink url="http://www.boost.org/more/getting_started/">Getting
+          Started Guide</ulink> with “<computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">test</phrase></computeroutput>,“
+          to build all the test targets. Also add the argument “<computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">--</phrase><phrase role="identifier">verbose</phrase><phrase role="special">-</phrase><phrase role="identifier">test</phrase></computeroutput>” to see the output generated by
+          the tests when they are run. On Windows, your <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput>
+          invocation might look something like:
+        </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">C</phrase><phrase role="special">:\\...\\</phrase><phrase role="identifier">quickstart</phrase><phrase role="special">&gt;</phrase> <phrase role="identifier">bjam</phrase> <phrase role="identifier">toolset</phrase><phrase role="special">=</phrase><phrase role="identifier">msvc</phrase> <phrase role="special">--</phrase><phrase role="identifier">verbose</phrase><phrase role="special">-</phrase><phrase role="identifier">test</phrase> <phrase role="identifier">test</phrase>
+</programlisting>
+        <para>
+          and on Unix variants, perhaps,
+        </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">.../</phrase><phrase role="identifier">quickstart</phrase><phrase role="error">$</phrase> <phrase role="identifier">bjam</phrase> <phrase role="identifier">toolset</phrase><phrase role="special">=</phrase><phrase role="identifier">gcc</phrase> <phrase role="special">--</phrase><phrase role="identifier">verbose</phrase><phrase role="special">-</phrase><phrase role="identifier">test</phrase> <phrase role="identifier">test</phrase>
+</programlisting>
+        <note>
+          <para>
+            For the sake of concision, the rest of this guide will use unix-style
+            forward slashes in pathnames instead of the backslashes with which Windows
+            users may be more familiar. The forward slashes should work everywhere
+            except in <ulink url="http://www.boost.org/more/getting_started/windows.html#command-prompt">Command
+            Prompt</ulink> windows, where you should use backslashes.
+          </para>
+        </note>
+        <para>
+          If you followed this procedure successfully, you will have built an extension
+          module called <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">extending</phrase></computeroutput>
+          and tested it by running a Python script called <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">test_extending</phrase><phrase role="special">.</phrase><phrase role="identifier">py</phrase></computeroutput>.
+          You will also have built and run a simple application called <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">embedding</phrase></computeroutput> that embeds python.
+        </para>
+      </section>
+      <section id="building.no_install_quickstart.in_case_of_trouble">
+        <title><link linkend="building.no_install_quickstart.in_case_of_trouble">In
+        Case of Trouble</link></title>
+        <para>
+          If you're seeing lots of compiler and/or linker error messages, it's probably
+          because Boost.Build is having trouble finding your Python installation.
+          You might want to pass the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">--</phrase><phrase role="identifier">debug</phrase><phrase role="special">-</phrase><phrase role="identifier">configuration</phrase></computeroutput> option to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput> the first few times you invoke it,
+          to make sure that Boost.Build is correctly locating all the parts of your
+          Python installation. If it isn't, consider <link linkend="building.configuring_boost_build">Configuring
+          Boost.Build</link> as detailed below.
+        </para>
+        <para>
+          If you're still having trouble, Someone on one of the following mailing
+          lists may be able to help:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <simpara>
+              The <ulink url="http://www.boost.org/more/mailing_lists.htm#jamboost">Boost.Build
+              mailing list</ulink> for issues related to Boost.Build
+            </simpara>
+          </listitem>
+          <listitem>
+            <simpara>
+              The <ulink url="http://www.boost.org/more/mailing_lists.htm#cplussig">Boost.Python
+              mailing list</ulink> for issues specifically related to Boost.Python
+            </simpara>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section id="building.no_install_quickstart.in_case_everything_seemed_to_wor">
+        <title><link linkend="building.no_install_quickstart.in_case_everything_seemed_to_wor">In
+        Case Everything Seemed to Work</link></title>
+        <para>
+          Rejoice! If you're new to Boost.Python, at this point it might be a good
+          idea to ignore build issues for a while and concentrate on learning the
+          library by going through the <ulink url="tutorial/index.html">Tutorial</ulink>
+          and perhaps some of the <ulink url="reference/index.html">Reference Manual</ulink>,
+          trying out what you've learned about the API by modifying the quickstart
+          project.
+        </para>
+      </section>
+      <section id="building.no_install_quickstart.modifying_the_example_project">
+        <title><link linkend="building.no_install_quickstart.modifying_the_example_project">Modifying
+        the Example Project</link></title>
+        <para>
+          If you're content to keep your extension module forever in one source file
+          called <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">extending</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase></computeroutput>, inside your Boost.Python distribution,
+          and import it forever as <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">extending</phrase></computeroutput>,
+          then you can stop here. However, it's likely that you will want to make
+          a few changes. There are a few things you can do without having to learn
+          <ulink url="http://www.boost.org/build">Boost.Build</ulink> in depth.
+        </para>
+        <para>
+          The project you just built is specified in two files in the current directory:
+          <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">boost</phrase><phrase role="special">-</phrase><phrase role="identifier">build</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput>, which tells <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput>
+          where it can find the interpreted code of the Boost build system, and
+          <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Jamroot</phrase></computeroutput>, which describes
+          the targets you just built. These files are heavily commented, so they
+          should be easy to modify. Take care, however, to preserve whitespace. Punctuation
+          such as <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">;</phrase></computeroutput> will not be recognized
+          as intended by <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput> if
+          it is not surrounded by whitespace.
+        </para>
+        <section id="building.no_install_quickstart.modifying_the_example_project.relocate_the_project">
+          <title><link linkend="building.no_install_quickstart.modifying_the_example_project.relocate_the_project">Relocate
+          the Project</link></title>
+          <para>
+            You'll probably want to copy this project elsewhere so you can change
+            it without modifying your Boost distribution. To do that, simply
+          </para>
+          <para>
+            a. copy the entire <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">example</phrase><phrase role="special">/</phrase><phrase role="identifier">quickstart</phrase><phrase role="special">/</phrase></computeroutput> directory into a new directory.
+          </para>
+          <para>
+            b. In the new copies of <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">boost</phrase><phrase role="special">-</phrase><phrase role="identifier">build</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput>
+            and <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Jamroot</phrase></computeroutput>, locate the
+            relative path near the top of the file that is clearly marked by a comment,
+            and edit that path so that it refers to the same directory your Boost
+            distribution as it referred to when the file was in its original location
+            in the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">example</phrase><phrase role="special">/</phrase><phrase role="identifier">quickstart</phrase><phrase role="special">/</phrase></computeroutput>
+            directory.
+          </para>
+          <para>
+            For example, if you moved the project from <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">/</phrase><phrase role="identifier">home</phrase><phrase role="special">/</phrase><phrase role="identifier">dave</phrase><phrase role="special">/</phrase><phrase role="identifier">boost_1_34_0</phrase><phrase role="special">/</phrase><phrase role="identifier">libs</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">/</phrase><phrase role="identifier">example</phrase><phrase role="special">/</phrase><phrase role="identifier">quickstart</phrase></computeroutput> to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">/</phrase><phrase role="identifier">home</phrase><phrase role="special">/</phrase><phrase role="identifier">dave</phrase><phrase role="special">/</phrase><phrase role="identifier">my</phrase><phrase role="special">-</phrase><phrase role="identifier">project</phrase></computeroutput>, you could change the first
+            path in <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">boost</phrase><phrase role="special">-</phrase><phrase role="identifier">build</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput> from
+          </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">../../../../</phrase><phrase role="identifier">tools</phrase><phrase role="special">/</phrase><phrase role="identifier">build</phrase><phrase role="special">/</phrase><phrase role="identifier">src</phrase>
+</programlisting>
+          <para>
+            to
+          </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">/</phrase><phrase role="identifier">home</phrase><phrase role="special">/</phrase><phrase role="identifier">dave</phrase><phrase role="special">/</phrase><phrase role="identifier">boost_1_34_0</phrase><phrase role="special">/</phrase><phrase role="identifier">tools</phrase><phrase role="special">/</phrase><phrase role="identifier">build</phrase><phrase role="special">/</phrase><phrase role="identifier">src</phrase>
+</programlisting>
+          <para>
+            and change the first path in <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Jamroot</phrase></computeroutput>
+            from
+          </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">../../../..</phrase>
+</programlisting>
+          <para>
+            to
+          </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">/</phrase><phrase role="identifier">home</phrase><phrase role="special">/</phrase><phrase role="identifier">dave</phrase><phrase role="special">/</phrase><phrase role="identifier">boost_1_34_0</phrase>
+</programlisting>
+        </section>
+        <section id="building.no_install_quickstart.modifying_the_example_project.add_new_or_change_names_of_exist">
+          <title><link linkend="building.no_install_quickstart.modifying_the_example_project.add_new_or_change_names_of_exist">Add
+          New or Change Names of Existing Source Files</link></title>
+          <para>
+            The names of additional source files involved in building your extension
+            module or embedding application can be listed in <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Jamroot</phrase></computeroutput>
+            right alongside <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">extending</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase></computeroutput>
+            or <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">embedding</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase></computeroutput> respectively. Just be sure to leave
+            whitespace around each filename:
+          </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="error">…</phrase> <phrase role="identifier">file1</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase> <phrase role="identifier">file2</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase> <phrase role="identifier">file3</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase> <phrase role="error">…</phrase>
+</programlisting>
+          <para>
+            Naturally, if you want to change the name of a source file you can tell
+            Boost.Build about it by editing the name in <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Jamroot</phrase></computeroutput>.
+          </para>
+        </section>
+        <section id="building.no_install_quickstart.modifying_the_example_project.change_the_name_of_your_extensio">
+          <title><link linkend="building.no_install_quickstart.modifying_the_example_project.change_the_name_of_your_extensio">Change
+          the Name of your Extension Module</link></title>
+          <para>
+            The name of the extension module is determined by two things:
+          </para>
+          <orderedlist inheritnum="ignore" continuation="restarts">
+            <listitem>
+              <simpara>
+                the name in <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Jamroot</phrase></computeroutput>
+                immediately following <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">python</phrase><phrase role="special">-</phrase><phrase role="identifier">extension</phrase></computeroutput>,
+                and
+              </simpara>
+            </listitem>
+            <listitem>
+              <simpara>
+                the name passed to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">BOOST_PYTHON_MODULE</phrase></computeroutput>
+                in <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">extending</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase></computeroutput>.
+              </simpara>
+            </listitem>
+          </orderedlist>
+          <para>
+            To change the name of the extension module from <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">extending</phrase></computeroutput>
+            to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">hello</phrase></computeroutput>, you'd edit
+            <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Jamroot</phrase></computeroutput>, changing
+          </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">python</phrase><phrase role="special">-</phrase><phrase role="identifier">extension</phrase> <phrase role="identifier">extending</phrase> <phrase role="special">:</phrase> <phrase role="identifier">extending</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase> <phrase role="special">;</phrase>
+</programlisting>
+          <para>
+            to
+          </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">python</phrase><phrase role="special">-</phrase><phrase role="identifier">extension</phrase> <phrase role="identifier">hello</phrase> <phrase role="special">:</phrase> <phrase role="identifier">extending</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase> <phrase role="special">;</phrase>
+</programlisting>
+          <para>
+            and you'd edit extending.cpp, changing
+          </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">BOOST_PYTHON_MODULE</phrase><phrase role="special">(</phrase><phrase role="identifier">extending</phrase><phrase role="special">)</phrase>
+</programlisting>
+          <para>
+            to
+          </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">BOOST_PYTHON_MODULE</phrase><phrase role="special">(</phrase><phrase role="identifier">hello</phrase><phrase role="special">)</phrase>
+</programlisting>
+        </section>
+      </section>
+    </section>
+    <section id="building.installing_boost_python_on_your_">
+      <title><link linkend="building.installing_boost_python_on_your_">Installing
+      Boost.Python on your System</link></title>
+      <para>
+        Since Boost.Python is a separately-compiled (as opposed to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">header</phrase><phrase role="special">-</phrase><phrase role="identifier">only</phrase></computeroutput>) library, its user relies on the services
+        of a Boost.Python library binary.
+      </para>
+      <para>
+        If you need a regular installation of the Boost.Python library binaries on
+        your system, the Boost <ulink url="http://www.boost.org/more/getting_started/">Getting
+        Started Guide</ulink> will walk you through the steps of creating one. If
+        building binaries from source, you might want to supply the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">--</phrase><phrase role="identifier">with</phrase><phrase role="special">-</phrase><phrase role="identifier">python</phrase></computeroutput>
+        argument to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput> (or the
+        <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">--</phrase><phrase role="identifier">with</phrase><phrase role="special">-</phrase><phrase role="identifier">libraries</phrase><phrase role="special">=</phrase><phrase role="identifier">python</phrase></computeroutput>
+        argument to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">configure</phrase></computeroutput>), so
+        only the Boost.Python binary will be built, rather than all the Boost binaries.
+      </para>
+    </section>
+    <section id="building.configuring_boost_build">
+      <title><link linkend="building.configuring_boost_build">Configuring Boost.Build</link></title>
+      <para>
+        As described in the <ulink url="http://www.boost.org/build/doc/html/bbv2/overview/configuration.html">Boost.Build
+        Reference Manual</ulink>, a file called <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">user</phrase><phrase role="special">-</phrase><phrase role="identifier">config</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput> in
+        your home directory is used to specify the tools and libraries available
+        to the build system. You may need to create or edit <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">user</phrase><phrase role="special">-</phrase><phrase role="identifier">config</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput> to
+        tell Boost.Build how to invoke Python, <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="preprocessor">#include</phrase></computeroutput>
+        its headers, and link with its libraries.
+      </para>
+      <note>
+        <para>
+          If you are using a unix-variant OS and you ran Boost's <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">configure</phrase></computeroutput>
+          script, it may have generated a <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">user</phrase><phrase role="special">-</phrase><phrase role="identifier">config</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput>
+          for you. <footnote id="building.configuring_boost_build.f0">
+          <para>
+            <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">configure</phrase></computeroutput> overwrites
+            the existing <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">user</phrase><phrase role="special">-</phrase><phrase role="identifier">config</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput> in your home directory (if any)
+            after making a backup of the old version.
+          </para>
+          </footnote> If your <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">configure</phrase></computeroutput>/<computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">make</phrase></computeroutput> sequence was successful and Boost.Python
+          binaries were built, your <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">user</phrase><phrase role="special">-</phrase><phrase role="identifier">config</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput>
+          file is probably already correct.
+        </para>
+      </note>
+      <para>
+        If you have one fairly “standard” python installation for your platform,
+        you might not need to do anything special to describe it. If you haven't
+        configured python in <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">user</phrase><phrase role="special">-</phrase><phrase role="identifier">config</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput> (and
+        you don't specify <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">--</phrase><phrase role="identifier">without</phrase><phrase role="special">-</phrase><phrase role="identifier">python</phrase></computeroutput>
+        on the Boost.Build command line), Boost.Build will automatically execute
+        the equivalent of
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">import</phrase> <phrase role="identifier">toolset</phrase> <phrase role="special">:</phrase> <phrase role="keyword">using</phrase> <phrase role="special">;</phrase>
+<phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">;</phrase>
+</programlisting>
+      <para>
+        which automatically looks for Python in the most likely places. However,
+        that only happens when using the Boost.Python project file (e.g. when referred
+        to by another project as in the quickstart method). If instead you are linking
+        against separately-compiled Boost.Python binaries, you should set up a <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">user</phrase><phrase role="special">-</phrase><phrase role="identifier">config</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput> file
+        with at least the minimal incantation above.
+      </para>
+      <section id="building.configuring_boost_build.python_configuration_parameters">
+        <title><link linkend="building.configuring_boost_build.python_configuration_parameters">Python
+        Configuration Parameters</link></title>
+        <para>
+          If you have several versions of Python installed, or Python is installed
+          in an unusual way, you may want to supply any or all of the following optional
+          parameters to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase></computeroutput>.
+        </para>
+        <variablelist>
+          <title/>
+          <varlistentry>
+            <term>version</term>
+            <listitem>
+              <para>
+                the version of Python to use. Should be in Major.Minor format, for
+                example, <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="number">2.3</phrase></computeroutput>. Do not
+                include the subminor version (i.e. <emphasis role="bold">not</emphasis>
+                <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="number">2.5</phrase><phrase role="special">.</phrase><phrase role="number">1</phrase></computeroutput>). If you have multiple Python versions
+                installed, the version will usually be the only configuration argument
+                required.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>cmd-or-prefix</term>
+            <listitem>
+              <para>
+                preferably, a command that invokes a Python interpreter. Alternatively,
+                the installation prefix for Python libraries and header files. Only
+                use the alternative formulation if there is no appropriate Python
+                executable available.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><emphasis role="bold">includes</emphasis></term>
+            <listitem>
+              <para>
+                the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="preprocessor">#include</phrase></computeroutput> paths
+                for Python headers. Normally the correct path(s) will be automatically
+                deduced from <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">version</phrase></computeroutput>
+                and/or <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">cmd</phrase><phrase role="special">-</phrase><phrase role="keyword">or</phrase><phrase role="special">-</phrase><phrase role="identifier">prefix</phrase></computeroutput>.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><emphasis role="bold">libraries</emphasis></term>
+            <listitem>
+              <para>
+                the path to Python library binaries. On MacOS/Darwin, you can also
+                pass the path of the Python framework. Normally the correct path(s)
+                will be automatically deduced from <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">version</phrase></computeroutput>
+                and/or <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">cmd</phrase><phrase role="special">-</phrase><phrase role="keyword">or</phrase><phrase role="special">-</phrase><phrase role="identifier">prefix</phrase></computeroutput>.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><emphasis role="bold">condition</emphasis></term>
+            <listitem>
+              <para>
+                if specified, should be a set of Boost.Build properties that are
+                matched against the build configuration when Boost.Build selects
+                a Python configuration to use. See examples below for details.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term><emphasis role="bold">extension-suffix</emphasis></term>
+            <listitem>
+              <para>
+                A string to append to the name of extension modules before the true
+                filename extension. You almost certainly don't need to use this.
+                Usually this suffix is only used when targeting a Windows debug build
+                of Python, and will be set automatically for you based on the value
+                of the <link linkend="building.python_debugging_builds">&lt;python-debugging&gt;</link>
+                feature. However, at least one Linux distribution (Ubuntu Feisty
+                Fawn) has a specially configured <ulink url="https://wiki.ubuntu.com/PyDbgBuilds">&lt;python-dbg&gt;</ulink>
+                package that claims to use such a suffix.
+              </para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+      <section id="building.configuring_boost_build.examples">
+        <title><link linkend="building.configuring_boost_build.examples">Examples</link></title>
+        <para>
+          Note that in the examples below, case and <emphasis role="bold">especially
+          whitespace</emphasis> are significant.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <simpara>
+              If you have both python 2.5 and python 2.4 installed, <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">user</phrase><phrase role="special">-</phrase><phrase role="identifier">config</phrase><phrase role="special">.</phrase><phrase role="identifier">jam</phrase></computeroutput> might contain
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">:</phrase> <phrase role="number">2.5</phrase> <phrase role="special">;</phrase>  <phrase role="special">#</phrase> <phrase role="identifier">Make</phrase> <phrase role="identifier">both</phrase> <phrase role="identifier">versions</phrase> <phrase role="identifier">of</phrase> <phrase role="identifier">Python</phrase> <phrase role="identifier">available</phrase>
+<phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">:</phrase> <phrase role="number">2.4</phrase> <phrase role="special">;</phrase>  <phrase role="special">#</phrase> <phrase role="identifier">To</phrase> <phrase role="identifier">build</phrase> <phrase role="identifier">with</phrase> <phrase role="identifier">python</phrase> <phrase role="number">2.4</phrase><phrase role="special">,</phrase> <phrase role="identifier">add</phrase> <phrase role="identifier">python</phrase><phrase role="special">=</phrase><phrase role="number">2.4</phrase>
+                      <phrase role="preprocessor"># to</phrase> <phrase role="identifier">your</phrase> <phrase role="identifier">command</phrase> <phrase role="identifier">line</phrase><phrase role="special">.</phrase>
+</programlisting>
+              <para>
+                The first version configured (2.5) becomes the default. To build
+                against python 2.4, add <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">python</phrase><phrase role="special">=</phrase><phrase role="number">2.4</phrase></computeroutput>
+                to the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput> command
+                line.
+              </para>
+            </simpara>
+          </listitem>
+          <listitem>
+            <simpara>
+              If you have python installed in an unusual location, you might supply
+              the path to the interpreter in the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">cmd</phrase><phrase role="special">-</phrase><phrase role="keyword">or</phrase><phrase role="special">-</phrase><phrase role="identifier">prefix</phrase></computeroutput>
+              parameter:
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">:</phrase> <phrase role="special">:</phrase> <phrase role="special">/</phrase><phrase role="identifier">usr</phrase><phrase role="special">/</phrase><phrase role="identifier">local</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">-</phrase><phrase role="number">2.6</phrase><phrase role="special">-</phrase><phrase role="identifier">beta</phrase><phrase role="special">/</phrase><phrase role="identifier">bin</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase> <phrase role="special">;</phrase>
+</programlisting>
+            </simpara>
+          </listitem>
+          <listitem>
+            <simpara>
+              If you have a separate build of Python for use with a particular toolset,
+              you might supply that toolset in the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">condition</phrase></computeroutput>
+              parameter:
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">;</phrase>  <phrase role="special">#</phrase> <phrase role="identifier">use</phrase> <phrase role="keyword">for</phrase> <phrase role="identifier">most</phrase> <phrase role="identifier">toolsets</phrase>
+
+<phrase role="preprocessor"># Use</phrase> <phrase role="identifier">with</phrase> <phrase role="identifier">Intel</phrase> <phrase role="identifier">C</phrase><phrase role="special">++</phrase> <phrase role="identifier">toolset</phrase>
+<phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase>
+     <phrase role="special">:</phrase> <phrase role="special">#</phrase> <phrase role="identifier">version</phrase>
+     <phrase role="special">:</phrase> <phrase role="identifier">c</phrase><phrase role="special">:\\</phrase><phrase role="identifier">Devel</phrase><phrase role="special">\\</phrase><phrase role="identifier">Python</phrase><phrase role="special">-</phrase><phrase role="number">2.5</phrase><phrase role="special">-</phrase><phrase role="identifier">IntelBuild</phrase><phrase role="special">\\</phrase><phrase role="identifier">PCBuild</phrase><phrase role="special">\\</phrase><phrase role="identifier">python</phrase> <phrase role="special">#</phrase> <phrase role="identifier">cmd</phrase><phrase role="special">-</phrase><phrase role="keyword">or</phrase><phrase role="special">-</phrase><phrase role="identifier">prefix</phrase>
+     <phrase role="special">:</phrase> <phrase role="special">#</phrase> <phrase role="identifier">includes</phrase>
+     <phrase role="special">:</phrase> <phrase role="special">#</phrase> <phrase role="identifier">libraries</phrase>
+     <phrase role="special">:</phrase> <phrase role="special">&lt;</phrase><phrase role="identifier">toolset</phrase><phrase role="special">&gt;</phrase><phrase role="identifier">intel</phrase> <phrase role="special">#</phrase> <phrase role="identifier">condition</phrase>
+     <phrase role="special">;</phrase>
+</programlisting>
+            </simpara>
+          </listitem>
+          <listitem>
+            <simpara>
+              If you have downloaded the Python sources and built both the normal
+              and the <link linkend="building.python_debugging_builds">"python
+              debugging"</link> builds from source on Windows, you might see:
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">:</phrase> <phrase role="number">2.5</phrase> <phrase role="special">:</phrase> <phrase role="identifier">C</phrase><phrase role="special">:\\</phrase><phrase role="identifier">src</phrase><phrase role="special">\\</phrase><phrase role="identifier">Python</phrase><phrase role="special">-</phrase><phrase role="number">2.5</phrase><phrase role="special">\\</phrase><phrase role="identifier">PCBuild</phrase><phrase role="special">\\</phrase><phrase role="identifier">python</phrase> <phrase role="special">;</phrase>
+<phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">:</phrase> <phrase role="number">2.5</phrase> <phrase role="special">:</phrase> <phrase role="identifier">C</phrase><phrase role="special">:\\</phrase><phrase role="identifier">src</phrase><phrase role="special">\\</phrase><phrase role="identifier">Python</phrase><phrase role="special">-</phrase><phrase role="number">2.5</phrase><phrase role="special">\\</phrase><phrase role="identifier">PCBuild</phrase><phrase role="special">\\</phrase><phrase role="identifier">python_d</phrase>
+  <phrase role="special">:</phrase> <phrase role="special">#</phrase> <phrase role="identifier">includes</phrase>
+  <phrase role="special">:</phrase> <phrase role="special">#</phrase> <phrase role="identifier">libs</phrase>
+  <phrase role="special">:</phrase> <phrase role="special">&lt;</phrase><phrase role="identifier">python</phrase><phrase role="special">-</phrase><phrase role="identifier">debugging</phrase><phrase role="special">&gt;</phrase><phrase role="identifier">on</phrase> <phrase role="special">;</phrase>
+</programlisting>
+            </simpara>
+          </listitem>
+          <listitem>
+            <simpara>
+              You can set up your user-config.jam so a bjam built under Windows can
+              build/test both Windows and Cygwin_ python extensions. Just pass <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">&lt;</phrase><phrase role="identifier">target</phrase><phrase role="special">-</phrase><phrase role="identifier">os</phrase><phrase role="special">&gt;</phrase><phrase role="identifier">cygwin</phrase></computeroutput>
+              in the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">condition</phrase></computeroutput> parameter
+              for the cygwin python installation:
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="preprocessor"># windows</phrase> <phrase role="identifier">installation</phrase>
+<phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">;</phrase>
+
+<phrase role="preprocessor"># cygwin</phrase> <phrase role="identifier">installation</phrase>
+<phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">:</phrase> <phrase role="special">:</phrase> <phrase role="identifier">c</phrase><phrase role="special">:\\</phrase><phrase role="identifier">cygwin</phrase><phrase role="special">\\</phrase><phrase role="identifier">bin</phrase><phrase role="special">\\</phrase><phrase role="identifier">python2</phrase><phrase role="special">.</phrase><phrase role="number">5</phrase> <phrase role="special">:</phrase> <phrase role="special">:</phrase> <phrase role="special">:</phrase> <phrase role="special">&lt;</phrase><phrase role="identifier">target</phrase><phrase role="special">-</phrase><phrase role="identifier">os</phrase><phrase role="special">&gt;</phrase><phrase role="identifier">cygwin</phrase> <phrase role="special">;</phrase>
+</programlisting>
+              <para>
+                when you put target-os=cygwin in your build request, it should build
+                with the cygwin version of python: <anchor id="flavor"/>_
+              </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase> <phrase role="identifier">target</phrase><phrase role="special">-</phrase><phrase role="identifier">os</phrase><phrase role="special">=</phrase><phrase role="identifier">cygwin</phrase> <phrase role="identifier">toolset</phrase><phrase role="special">=</phrase><phrase role="identifier">gcc</phrase>
+</programlisting>
+              <para>
+                This is supposed to work the other way, too (targeting windows python
+                with a <ulink url="http://cygwin.com">Cygwin</ulink> bjam) but it
+                seems as though the support in Boost.Build's toolsets for building
+                that way is broken at the time of this writing.
+              </para>
+            </simpara>
+          </listitem>
+          <listitem>
+            <simpara>
+              Note that because of <ulink url="http://zigzag.cs.msu.su/boost.build/wiki/AlternativeSelection">the
+              way Boost.Build currently selects target alternatives</ulink>, you
+              might have be very explicit in your build requests. For example, given:
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">:</phrase> <phrase role="number">2.5</phrase> <phrase role="special">;</phrase> <phrase role="special">#</phrase> <phrase role="identifier">a</phrase> <phrase role="identifier">regular</phrase> <phrase role="identifier">windows</phrase> <phrase role="identifier">build</phrase>
+<phrase role="keyword">using</phrase> <phrase role="identifier">python</phrase> <phrase role="special">:</phrase> <phrase role="number">2.4</phrase> <phrase role="special">:</phrase> <phrase role="special">:</phrase> <phrase role="special">:</phrase> <phrase role="special">:</phrase> <phrase role="special">&lt;</phrase><phrase role="identifier">target</phrase><phrase role="special">-</phrase><phrase role="identifier">os</phrase><phrase role="special">&gt;</phrase><phrase role="identifier">cygwin</phrase> <phrase role="special">;</phrase>
+</programlisting>
+              <para>
+                building with
+              </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase> <phrase role="identifier">target</phrase><phrase role="special">-</phrase><phrase role="identifier">os</phrase><phrase role="special">=</phrase><phrase role="identifier">cygwin</phrase>
+</programlisting>
+              <para>
+                will yield an error. Instead, you'll need to write
+              </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase> <phrase role="identifier">target</phrase><phrase role="special">-</phrase><phrase role="identifier">os</phrase><phrase role="special">=</phrase><phrase role="identifier">cygwin</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">=</phrase><phrase role="number">2.4</phrase>
+</programlisting>
+            </simpara>
+          </listitem>
+        </itemizedlist>
+      </section>
+    </section>
+    <section id="building.choosing_a_boost_python_library_">
+      <title><link linkend="building.choosing_a_boost_python_library_">Choosing a
+      Boost.Python Library Binary</link></title>
+      <para>
+        If—instead of letting Boost.Build construct and link with the right libraries
+        automatically—you choose to use a pre-built Boost.Python library, you'll
+        need to think about which one to link with. The Boost.Python binary comes
+        in both static and dynamic flavors. Take care to choose the right flavor
+        for your application. <footnote id="building.choosing_a_boost_python_library_.f0">
+        <para>
+          Information about how to identify the static and dynamic builds of Boost.Python
+          on <ulink url="http://boost.org/more/getting_started/windows.html#library-naming">Windows</ulink>
+          / <ulink url="http://boost.org/more/getting_started/unix-variants.html#library-naming">Unix
+          variants</ulink>
+        </para>
+        </footnote>
+      </para>
+      <section id="building.choosing_a_boost_python_library_.the_dynamic_binary">
+        <title><link linkend="building.choosing_a_boost_python_library_.the_dynamic_binary">The
+        Dynamic Binary</link></title>
+        <para>
+          The dynamic library is the safest and most-versatile choice:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <simpara>
+              A single copy of the library code is used by all extension modules
+              built with a given toolset. <footnote id="building.choosing_a_boost_python_library_.the_dynamic_binary.f0">
+              <para>
+                Because of the way most *nix platforms share symbols among dynamically-loaded
+                objects, I'm not certain that extension modules built with different
+                compiler toolsets will always use different copies of the Boost.Python
+                library when loaded into the same Python instance. Not using different
+                libraries could be a good thing if the compilers have compatible
+                ABIs, because extension modules built with the two libraries would
+                be interoperable. Otherwise, it could spell disaster, since an extension
+                module and the Boost.Python library would have different ideas of
+                such things as class layout. I would appreciate someone doing the
+                experiment to find out what happens.
+              </para>
+              </footnote>
+            </simpara>
+          </listitem>
+          <listitem>
+            <simpara>
+              The library contains a type conversion registry. Because one registry
+              is shared among all extension modules, instances of a class exposed
+              to Python in one dynamically-loaded extension module can be passed
+              to functions exposed in another such module.
+            </simpara>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section id="building.choosing_a_boost_python_library_.the_static_binary">
+        <title><link linkend="building.choosing_a_boost_python_library_.the_static_binary">The
+        Static Binary</link></title>
+        <para>
+          It might be appropriate to use the static Boost.Python library in any of
+          the following cases:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <simpara>
+              You are <ulink url="https://docs.python.org/2/extending/extending.html">extending</ulink>
+              python and the types exposed in your dynamically-loaded extension module
+              don't need to be used by any other Boost.Python extension modules,
+              and you don't care if the core library code is duplicated among them.
+            </simpara>
+          </listitem>
+          <listitem>
+            <simpara>
+              You are <ulink url="https://docs.python.org/2/extending/embedding.html">embedding</ulink>
+              python in your application and either:
+              <itemizedlist>
+                <listitem>
+                  <simpara>
+                    You are targeting a Unix variant OS other than MacOS or AIX,
+                    where the dynamically-loaded extension modules can “see”
+                    the Boost.Python library symbols that are part of the executable.
+                  </simpara>
+                </listitem>
+                <listitem>
+                  <simpara>
+                    Or, you have statically linked some Boost.Python extension modules
+                    into your application and you don't care if any dynamically-loaded
+                    Boost.Python extension modules are able to use the types exposed
+                    by your statically-linked extension modules (and vice-versa).
+                  </simpara>
+                </listitem>
+              </itemizedlist>
+            </simpara>
+          </listitem>
+        </itemizedlist>
+      </section>
+    </section>
+    <section id="building.include_issues">
+      <title><link linkend="building.include_issues"><computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="preprocessor">#include</phrase></computeroutput>
+      Issues</link></title>
+      <para>
+        1. If you should ever have occasion to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="preprocessor">#include</phrase>
+        <phrase role="string">"python.h"</phrase></computeroutput> directly in a
+        translation unit of a program using Boost.Python, use <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="preprocessor">#include</phrase>
+        <phrase role="string">"boost/python/detail/wrap_python.hpp"</phrase></computeroutput>
+        instead. It handles several issues necessary for use with Boost.Python, one
+        of which is mentioned in the next section.
+      </para>
+      <para>
+        2. Be sure not to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="preprocessor">#include</phrase></computeroutput>
+        any system headers before <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">wrap_python</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase></computeroutput>. This
+        restriction is actually imposed by Python, or more properly, by Python's
+        interaction with your operating system. See <ulink url="http://docs.python.org/ext/simpleExample.html">http://docs.python.org/ext/simpleExample.html</ulink>
+        for details.
+      </para>
+    </section>
+    <section id="building.python_debugging_builds">
+      <title><link linkend="building.python_debugging_builds">Python Debugging Builds</link></title>
+      <para>
+        Python can be built in a special “python debugging” configuration that
+        adds extra checks and instrumentation that can be very useful for developers
+        of extension modules. The data structures used by the debugging configuration
+        contain additional members, so <emphasis role="bold">a Python executable
+        built with python debugging enabled cannot be used with an extension module
+        or library compiled without it, and vice-versa.</emphasis>
+      </para>
+      <para>
+        Since pre-built “python debugging” versions of the Python executable
+        and libraries are not supplied with most distributions of Python, <footnote id="building.python_debugging_builds.f0">
+        <para>
+          On Unix and similar platforms, a debugging python and associated libraries
+          are built by adding --with-pydebug when configuring the Python build. On
+          Windows, the debugging version of Python is generated by the "Win32
+          Debug" target of the Visual Studio project in the PCBuild subdirectory
+          of a full Python source code distribution.
+        </para>
+        </footnote> and we didn't want to force our users to build them, Boost.Build
+        does not automatically enable python debugging in its <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">debug</phrase></computeroutput>
+        build variant (which is the default). Instead there is a special build property
+        called <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">python</phrase><phrase role="special">-</phrase><phrase role="identifier">debugging</phrase></computeroutput> that, when used as a build property,
+        will define the right preprocessor symbols and select the right libraries
+        to link with.
+      </para>
+      <para>
+        On unix-variant platforms, the debugging versions of Python's data structures
+        will only be used if the symbol <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Py_DEBUG</phrase></computeroutput>
+        is defined. On many windows compilers, when extension modules are built with
+        the preprocessor symbol <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">_DEBUG</phrase></computeroutput>,
+        Python defaults to force linking with a special debugging version of the
+        Python DLL. Since that symbol is very commonly used even when Python is not
+        present, Boost.Python temporarily undefines <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">_DEBUG</phrase></computeroutput>
+        when <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Python</phrase><phrase role="special">.</phrase><phrase role="identifier">h</phrase></computeroutput> is #included from <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">boost</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">/</phrase><phrase role="identifier">detail</phrase><phrase role="special">/</phrase><phrase role="identifier">wrap_python</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase></computeroutput> -
+        unless <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">BOOST_DEBUG_PYTHON</phrase></computeroutput>
+        is defined. The upshot is that if you want “python debugging”and you
+        aren't using Boost.Build, you should make sure <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">BOOST_DEBUG_PYTHON</phrase></computeroutput>
+        is defined, or python debugging will be suppressed.
+      </para>
+    </section>
+    <section id="building.testing_boost_python">
+      <title><link linkend="building.testing_boost_python">Testing Boost.Python</link></title>
+      <para>
+        To run the full test suite for Boost.Python, invoke <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase></computeroutput>
+        in the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">test</phrase></computeroutput> subdirectory
+        of your Boost.Python distribution.
+      </para>
+    </section>
+    <section id="building.notes_for_mingw_and_cygwin_with_">
+      <title><link linkend="building.notes_for_mingw_and_cygwin_with_">Notes for
+      MinGW (and Cygwin with -mno-cygwin) GCC Users</link></title>
+      <para>
+        If you are using a version of Python prior to 2.4.1 with a MinGW prior to
+        3.0.0 (with binutils-2.13.90-20030111-1), you will need to create a MinGW-compatible
+        version of the Python library; the one shipped with Python will only work
+        with a Microsoft-compatible linker. Follow the instructions in the “Non-Microsoft”
+        section of the “Building Extensions: Tips And Tricks” chapter in <ulink url="https://docs.python.org/2/install/index.html">Installing Python Modules</ulink>
+        to create <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">libpythonXX</phrase><phrase role="special">.</phrase><phrase role="identifier">a</phrase></computeroutput>, where <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">XX</phrase></computeroutput>
+        corresponds to the major and minor version numbers of your Python installation.
+      </para>
+    </section>
+  </chapter>
+  <chapter id="configuration" last-revision="$Date: 2016/08/05 20:22:59 $">
+    <title>Configuration</title>
+    <chapterinfo>
+      <authorgroup>
+      <author>
+        <firstname>David</firstname> <surname>Abrahams</surname>
+      </author>
+      </authorgroup>
+      <copyright>
+        <year>2002</year> <year>2003</year> <year>2004</year> <year>2005</year>
+        <year>2006</year> <year>2007</year> <year>2008</year> <year>2009</year>
+        <year>2010</year> <year>2011</year> <year>2012</year> <year>2013</year>
+        <year>2014</year> <year>2015</year> <holder>David Abrahams, Stefan Seefeld</holder>
+      </copyright>
+    </chapterinfo>
+    <section id="configuration.configuration">
+      <title><link linkend="configuration.configuration">Configuration</link></title>
+      <section id="configuration.configuration.introduction">
+        <title><link linkend="configuration.configuration.introduction">Introduction</link></title>
+        <para>
+          <emphasis role="bold">Boost.Python</emphasis> uses several configuration
+          macros in <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">&lt;</phrase><phrase role="identifier">boost</phrase><phrase role="special">/</phrase><phrase role="identifier">config</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase><phrase role="special">&gt;</phrase></computeroutput>, as well as configuration macros meant
+          to be supplied by the application. These macros are documented here.
+        </para>
+      </section>
+      <section id="configuration.configuration.application_defined_macros">
+        <title><link linkend="configuration.configuration.application_defined_macros">Application
+        Defined Macros</link></title>
+        <para>
+          These are the macros that may be defined by an application using Boost.Python.
+          Note that if you extend a strict interpretation of the C++ standard to
+          cover dynamic libraries, using different values of these macros when compiling
+          different libraries (including extension modules and the Boost.Python library
+          itself) is a violation of the <link linkend="odr">ODR</link>. However,
+          we know of no C++ implementations on which this particular violation is
+          detectable or causes any problems.
+        </para>
+        <informaltable frame="all">
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>
+                  <para>
+                    Macro
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    Default
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    Meaning
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_MAX_ARITY
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    15
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    The maximum arity of any function, member function, or constructor
+                    to be wrapped, invocation of a Boost.Python function wich is
+                    specified as taking arguments x1, x2,...Xn. This includes, in
+                    particular, callback mechanisms such as object::operator()(...)
+                    or call_method&lt;R&gt;(... ).
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_MAX_BASES
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    10
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    The maximum number of template arguments to the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bases</phrase><phrase role="special">&lt;...&gt;</phrase></computeroutput>
+                    class template, which is used to specify the bases of a wrapped
+                    C++ class..
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_STATIC_MODULE
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis>not defined</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    If defined, prevents your module initialization function from
+                    being treated as an exported symbol on platforms which support
+                    that distinction in-code
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_ENABLE_CDECL
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis>not defined</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    If defined, allows functions using the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">__cdecl</phrase></computeroutput>
+                    calling convention to be wrapped.
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_ENABLE_STDCALL
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis>not defined</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    If defined, allows functions using the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">__stdcall</phrase></computeroutput>
+                    calling convention to be wrapped.
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_ENABLE_FASTCALL
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis>not defined</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    If defined, allows functions using the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">__fastcall</phrase></computeroutput>
+                    calling convention to be wrapped.
+                  </para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </informaltable>
+      </section>
+      <section id="configuration.configuration.library_defined_defined_macros">
+        <title><link linkend="configuration.configuration.library_defined_defined_macros">Library
+        Defined Defined Macros</link></title>
+        <para>
+          These macros are defined by <emphasis role="bold">Boost.Python</emphasis>
+          and are implementation details of interest only to implementors and those
+          porting to new platforms.
+        </para>
+        <informaltable frame="all">
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>
+                  <para>
+                    Macro
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    Default
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    Meaning
+                  </para>
+                </entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_TYPE_ID_NAME
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis>not defined</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    If defined, this indicates that the type_info comparison across
+                    shared library boundaries does not work on this platform. In
+                    other words, if shared-lib-1 passes <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">typeid</phrase><phrase role="special">(</phrase><phrase role="identifier">T</phrase><phrase role="special">)</phrase></computeroutput> to a function in shared-lib-2
+                    which compares it to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">typeid</phrase><phrase role="special">(</phrase><phrase role="identifier">T</phrase><phrase role="special">)</phrase></computeroutput>, that comparison may return
+                    <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">false</phrase></computeroutput>. If this macro
+                    is #defined, Boost.Python uses and compares <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">typeid</phrase><phrase role="special">(</phrase><phrase role="identifier">T</phrase><phrase role="special">).</phrase><phrase role="identifier">name</phrase><phrase role="special">()</phrase></computeroutput> instead of using and comparing
+                    the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">type_info</phrase></computeroutput> objects directly.
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_NO_PY_SIGNATURES
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis>not defined</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    If defined for a module no pythonic signatures are generated
+                    for the docstrings of the module functions, and no python type
+                    is associated with any of the converters registered by the module.
+                    This also reduces the binary size of the module by about 14%
+                    (gcc compiled). If defined for the boost_python runtime library,
+                    the default for the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">docstring_options</phrase><phrase role="special">.</phrase><phrase role="identifier">enable_py_signatures</phrase><phrase role="special">()</phrase></computeroutput> is set to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">false</phrase></computeroutput>.
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_SUPPORTS_PY_SIGNATURES
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis>defined</emphasis> if <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">BOOST_PYTHON_NO_PY_SIGNATURES</phrase></computeroutput>
+                    is <emphasis>undefined</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    This macro is defined to enable a smooth transition from older
+                    Boost.Python versions which do not support pythonic signatures.
+                    For example usage see here.
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>
+                    BOOST_PYTHON_PY_SIGNATURES_PROPER_INIT_SELF_TYPE
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    <emphasis>not defined</emphasis>
+                  </para>
+                </entry>
+                <entry>
+                  <para>
+                    If defined the python type of <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">__init__</phrase></computeroutput>
+                    method "self" parameters is properly generated, otherwise
+                    object is used. It is undefined by default because it increases
+                    the binary size of the module by about 14% (gcc compiled).
+                  </para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </informaltable>
+      </section>
+    </section>
+  </chapter>
+  <chapter id="support" last-revision="$Date: 2016/08/05 20:22:59 $">
+    <title>Support Resources</title>
+    <bridgehead renderas="sect2" id="support.h0">
+      <phrase id="support.synopsis"/><link linkend="support.synopsis">Synopsis</link>
+    </bridgehead>
+    <para>
+      This is a list of available resources for support with Boost.Python problems
+      and feature requests. Please try to resist emailing the Boost.Python developers
+      directly for support. Use the following resources instead; the developers are
+      listening!
+    </para>
+    <bridgehead renderas="sect2" id="support.h1">
+      <phrase id="support.support"/><link linkend="support.support">Support</link>
+    </bridgehead>
+    <itemizedlist>
+      <listitem>
+        <simpara>
+          The <ulink url="http://www.boost.org/more/mailing_lists.htm#cplussig">Boost.Python
+          mailing list</ulink> is a forum for discussing Python/C++ interoperability,
+          and Boost.Python in particular. Post your Boost.Python questions here.
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          The <ulink url="http://www.boost.org/more/mailing_lists.htm#jamboost">Boost.Build
+          mailing list</ulink> is a forum for discussing Boost's Build System.
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          <para>
+            The Boost.Python <ulink url="https://github.com/boostorg/python/issues">Issue
+            tracker</ulink>
+          </para>
+          <note>
+            <para>
+              In the past we used Trac, which still hosts a considerable number of
+              <ulink url="https://svn.boost.org/trac/boost/query?status=!closed&amp;component=python+USE+GITHUB">open
+              issues</ulink>. We hope to be able to either close them or migrate
+              them to the new issue tracker.
+            </para>
+          </note>
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          The Boost.Python <ulink url="https://github.com/boostorg/python/wiki">Wiki</ulink>
+        </simpara>
+      </listitem>
+      <listitem>
+        <simpara>
+          Boost.Python <ulink url="https://github.com/boostorg/python">Source repository</ulink>
+        </simpara>
+      </listitem>
+    </itemizedlist>
+  </chapter>
+  <chapter id="faq" last-revision="$Date: 2016/08/05 20:22:59 $">
+    <title>Frequently Asked Questions (FAQs)</title>
+    <section id="faq.how_can_i_wrap_a_function_which_">
+      <title><link linkend="faq.how_can_i_wrap_a_function_which_">How can I wrap
+      a function which takes a function pointer as an argument?</link></title>
+      <para>
+        If what you're trying to do is something like this:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">typedef</phrase> <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">function</phrase><phrase role="special">&lt;</phrase><phrase role="keyword">void</phrase> <phrase role="special">(</phrase><phrase role="identifier">string</phrase> <phrase role="identifier">s</phrase><phrase role="special">)</phrase> <phrase role="special">&gt;</phrase> <phrase role="identifier">funcptr</phrase><phrase role="special">;</phrase>
+
+<phrase role="keyword">void</phrase> <phrase role="identifier">foo</phrase><phrase role="special">(</phrase><phrase role="identifier">funcptr</phrase> <phrase role="identifier">fp</phrase><phrase role="special">)</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">fp</phrase><phrase role="special">(</phrase><phrase role="string">"hello,world!"</phrase><phrase role="special">);</phrase>
+<phrase role="special">}</phrase>
+
+<phrase role="identifier">BOOST_PYTHON_MODULE</phrase><phrase role="special">(</phrase><phrase role="identifier">test</phrase><phrase role="special">)</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"foo"</phrase><phrase role="special">,</phrase><phrase role="identifier">foo</phrase><phrase role="special">);</phrase>
+<phrase role="special">}</phrase>
+</programlisting>
+      <para>
+        And then:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">def</phrase> <phrase role="identifier">hello</phrase><phrase role="special">(</phrase><phrase role="identifier">s</phrase><phrase role="special">):</phrase>
+<phrase role="special">...</phrase>    <phrase role="identifier">print</phrase> <phrase role="identifier">s</phrase>
+<phrase role="special">...</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">foo</phrase><phrase role="special">(</phrase><phrase role="identifier">hello</phrase><phrase role="special">)</phrase>
+<phrase role="identifier">hello</phrase><phrase role="special">,</phrase> <phrase role="identifier">world</phrase><phrase role="special">!</phrase>
+</programlisting>
+      <para>
+        The short answer is: "you can't". This is not a Boost.Python limitation
+        so much as a limitation of C++. The problem is that a Python function is
+        actually data, and the only way of associating data with a C++ function pointer
+        is to store it in a static variable of the function. The problem with that
+        is that you can only associate one piece of data with every C++ function,
+        and we have no way of compiling a new C++ function on-the-fly for every Python
+        function you decide to pass to <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">foo</phrase></computeroutput>.
+        In other words, this could work if the C++ function is always going to invoke
+        the <emphasis>same</emphasis> Python function, but you probably don't want
+        that.
+      </para>
+      <para>
+        If you have the luxury of changing the C++ code you're wrapping, pass it
+        an <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">object</phrase></computeroutput> instead and call
+        that; the overloaded function call operator will invoke the Python function
+        you pass it behind the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">object</phrase></computeroutput>.
+      </para>
+    </section>
+    <section id="faq.i_m_getting_the_attempt_to_retur">
+      <title><link linkend="faq.i_m_getting_the_attempt_to_retur">I'm getting the
+      "attempt to return dangling reference" error. What am I doing wrong?</link></title>
+      <para>
+        That exception is protecting you from causing a nasty crash. It usually happens
+        in response to some code like this:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">period</phrase> <phrase role="keyword">const</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">get_floating_frequency</phrase><phrase role="special">()</phrase> <phrase role="keyword">const</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="keyword">return</phrase> <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">call_method</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">period</phrase> <phrase role="keyword">const</phrase> <phrase role="special">&amp;&gt;(</phrase>
+    <phrase role="identifier">m_self</phrase><phrase role="special">,</phrase><phrase role="string">"get_floating_frequency"</phrase><phrase role="special">);</phrase>
+<phrase role="special">}</phrase>
+</programlisting>
+      <para>
+        And you get:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">ReferenceError</phrase><phrase role="special">:</phrase> <phrase role="identifier">Attempt</phrase> <phrase role="identifier">to</phrase> <phrase role="keyword">return</phrase> <phrase role="identifier">dangling</phrase> <phrase role="identifier">reference</phrase> <phrase role="identifier">to</phrase> <phrase role="identifier">object</phrase> <phrase role="identifier">of</phrase> <phrase role="identifier">type</phrase><phrase role="special">:</phrase>
+<phrase role="keyword">class</phrase> <phrase role="identifier">period</phrase>
+</programlisting>
+      <para>
+        In this case, the Python method invoked by <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">call_method</phrase></computeroutput>
+        constructs a new Python object. You're trying to return a reference to a
+        C++ object (an instance of <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">class</phrase> <phrase role="identifier">period</phrase></computeroutput>) contained within and owned by that
+        Python object. Because the called method handed back a brand new object,
+        the only reference to it is held for the duration of <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">get_floating_frequency</phrase><phrase role="special">()</phrase></computeroutput> above. When the function returns, the Python
+        object will be destroyed, destroying the instance of <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">class</phrase>
+        <phrase role="identifier">period</phrase></computeroutput>, and leaving the returned
+        reference dangling. That's already undefined behavior, and if you try to
+        do anything with that reference you're likely to cause a crash. Boost.Python
+        detects this situation at runtime and helpfully throws an exception instead
+        of letting you do that.
+      </para>
+    </section>
+    <section id="faq.is_return_internal_reference_eff">
+      <title><link linkend="faq.is_return_internal_reference_eff">Is <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">return_internal_reference</phrase></computeroutput> efficient?</link></title>
+      <para>
+        <emphasis role="bold">Q:</emphasis> /I have an object composed of 12 doubles.
+        A <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">const</phrase><phrase role="special">&amp;</phrase></computeroutput>
+        to this object is returned by a member function of another class. From the
+        viewpoint of using the returned object in Python I do not care if I get a
+        copy or a reference to the returned object. In Boost.Python I have the choice
+        of using <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">copy_const_reference</phrase></computeroutput>
+        or <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">return_internal_reference</phrase></computeroutput>.
+        Are there considerations that would lead me to prefer one over the other,
+        such as size of generated code or memory overhead?/
+      </para>
+      <para>
+        <emphasis role="bold">A:</emphasis> <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">copy_const_reference</phrase></computeroutput>
+        will make an instance with storage for one of your objects, <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">size</phrase> <phrase role="special">=</phrase> <phrase role="identifier">base_size</phrase> <phrase role="special">+</phrase> <phrase role="number">12</phrase> <phrase role="special">*</phrase> <phrase role="keyword">sizeof</phrase><phrase role="special">(</phrase><phrase role="keyword">double</phrase><phrase role="special">)</phrase></computeroutput>.
+        <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">return_internal_reference</phrase></computeroutput>
+        will make an instance with storage for a pointer to one of your objects,
+        <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">size</phrase> <phrase role="special">=</phrase>
+        <phrase role="identifier">base_size</phrase> <phrase role="special">+</phrase>
+        <phrase role="keyword">sizeof</phrase><phrase role="special">(</phrase><phrase role="keyword">void</phrase><phrase role="special">*)</phrase></computeroutput>. However,
+        it will also create a weak reference object which goes in the source object's
+        weakreflist and a special callback object to manage the lifetime of the internally-referenced
+        object. My guess? <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">copy_const_reference</phrase></computeroutput>
+        is your friend here, resulting in less overall memory use and less fragmentation,
+        also probably fewer total cycles.
+      </para>
+    </section>
+    <section id="faq.how_can_i_wrap_functions_which_t">
+      <title><link linkend="faq.how_can_i_wrap_functions_which_t">How can I wrap
+      functions which take C++ containers as arguments?</link></title>
+      <para>
+        Ralf W. Grosse-Kunstleve provides these notes:
+      </para>
+      <orderedlist inheritnum="ignore" continuation="restarts">
+        <listitem>
+          <simpara>
+            <para>
+              Using the regular <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">class_</phrase><phrase role="special">&lt;&gt;</phrase></computeroutput> wrapper:
+            </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">class_</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">vector</phrase><phrase role="special">&lt;</phrase><phrase role="keyword">double</phrase><phrase role="special">&gt;</phrase> <phrase role="special">&gt;(</phrase><phrase role="string">"std_vector_double"</phrase><phrase role="special">)</phrase>
+  <phrase role="special">.</phrase><phrase role="identifier">def</phrase><phrase role="special">(...)</phrase>
+  <phrase role="special">...</phrase>
+<phrase role="special">;</phrase>
+</programlisting>
+            This can be moved to a template so that several types (<computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">double</phrase></computeroutput>, <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">int</phrase></computeroutput>,
+            <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">long</phrase></computeroutput>, etc.) can be wrapped
+            with the same code. This technique is used in the file <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">scitbx</phrase><phrase role="special">/</phrase><phrase role="identifier">include</phrase><phrase role="special">/</phrase><phrase role="identifier">scitbx</phrase><phrase role="special">/</phrase><phrase role="identifier">array_family</phrase><phrase role="special">/</phrase><phrase role="identifier">boost_python</phrase><phrase role="special">/</phrase><phrase role="identifier">flex_wrapper</phrase><phrase role="special">.</phrase><phrase role="identifier">h</phrase></computeroutput> in the "scitbx" package.
+            The file could easily be modified for wrapping <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">vector</phrase><phrase role="special">&lt;&gt;</phrase></computeroutput> instantiations. This type of
+            C++/Python binding is most suitable for containers that may contain a
+            large number of elements (&gt;10000).
+          </simpara>
+        </listitem>
+        <listitem>
+          <simpara>
+            <para>
+              Using custom rvalue converters. Boost.Python "rvalue converters"
+              match function signatures such as:
+            </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">void</phrase> <phrase role="identifier">foo</phrase><phrase role="special">(</phrase><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">vector</phrase><phrase role="special">&lt;</phrase><phrase role="keyword">double</phrase><phrase role="special">&gt;</phrase> <phrase role="keyword">const</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">array</phrase><phrase role="special">);</phrase> <phrase role="comment">// pass by const-reference</phrase>
+<phrase role="keyword">void</phrase> <phrase role="identifier">foo</phrase><phrase role="special">(</phrase><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">vector</phrase><phrase role="special">&lt;</phrase><phrase role="keyword">double</phrase><phrase role="special">&gt;</phrase> <phrase role="identifier">array</phrase><phrase role="special">);</phrase> <phrase role="comment">// pass by value</phrase>
+</programlisting>
+            Some custom rvalue converters are implemented in the file <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">scitbx</phrase><phrase role="special">/</phrase><phrase role="identifier">include</phrase><phrase role="special">/</phrase><phrase role="identifier">scitbx</phrase><phrase role="special">/</phrase><phrase role="identifier">boost_python</phrase><phrase role="special">/</phrase><phrase role="identifier">container_conversions</phrase><phrase role="special">.</phrase><phrase role="identifier">h</phrase></computeroutput> This code can be used to convert
+            from C++ container types such as <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">vector</phrase><phrase role="special">&lt;&gt;</phrase></computeroutput> or <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">list</phrase><phrase role="special">&lt;&gt;</phrase></computeroutput> to Python tuples and vice versa.
+            A few simple examples can be found in the file <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">scitbx</phrase><phrase role="special">/</phrase><phrase role="identifier">array_family</phrase><phrase role="special">/</phrase><phrase role="identifier">boost_python</phrase><phrase role="special">/</phrase><phrase role="identifier">regression_test_module</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase></computeroutput>
+            Automatic C++ container &lt;-&gt; Python tuple conversions are most suitable
+            for containers of moderate size. These converters generate significantly
+            less object code compared to alternative 1 above.
+          </simpara>
+        </listitem>
+      </orderedlist>
+      <para>
+        A disadvantage of using alternative 2 is that operators such as arithmetic
+        +,-,*,/,% are not available. It would be useful to have custom rvalue converters
+        that convert to a "math_array" type instead of tuples. This is
+        currently not implemented but is possible within the framework of Boost.Python
+        V2 as it will be released in the next couple of weeks. [ed.: this was posted
+        on 2002/03/10]
+      </para>
+      <para>
+        It would also be useful to also have "custom lvalue converters"
+        such as <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">vector</phrase><phrase role="special">&lt;&gt;</phrase></computeroutput>
+        &lt;-&gt; Python list. These converters would support the modification of
+        the Python list from C++. For example:
+      </para>
+      <para>
+        C++:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">void</phrase> <phrase role="identifier">foo</phrase><phrase role="special">(</phrase><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">vector</phrase><phrase role="special">&lt;</phrase><phrase role="keyword">double</phrase><phrase role="special">&gt;</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">array</phrase><phrase role="special">)</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="keyword">for</phrase><phrase role="special">(</phrase><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">size_t</phrase> <phrase role="identifier">i</phrase><phrase role="special">=</phrase><phrase role="number">0</phrase><phrase role="special">;</phrase><phrase role="identifier">i</phrase><phrase role="special">&amp;</phrase><phrase role="identifier">lt</phrase><phrase role="special">;</phrase><phrase role="identifier">array</phrase><phrase role="special">.</phrase><phrase role="identifier">size</phrase><phrase role="special">();</phrase><phrase role="identifier">i</phrase><phrase role="special">++)</phrase> <phrase role="special">{</phrase>
+    <phrase role="identifier">array</phrase><phrase role="special">[</phrase><phrase role="identifier">i</phrase><phrase role="special">]</phrase> <phrase role="special">*=</phrase> <phrase role="number">2</phrase><phrase role="special">;</phrase>
+  <phrase role="special">}</phrase>
+<phrase role="special">}</phrase>
+</programlisting>
+      <para>
+        Python:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">l</phrase> <phrase role="special">=</phrase> <phrase role="special">[</phrase><phrase role="number">1</phrase><phrase role="special">,</phrase> <phrase role="number">2</phrase><phrase role="special">,</phrase> <phrase role="number">3</phrase><phrase role="special">]</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">foo</phrase><phrase role="special">(</phrase><phrase role="identifier">l</phrase><phrase role="special">)</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="keyword">print</phrase> <phrase role="identifier">l</phrase>
+<phrase role="special">[</phrase><phrase role="number">2</phrase><phrase role="special">,</phrase> <phrase role="number">4</phrase><phrase role="special">,</phrase> <phrase role="number">6</phrase><phrase role="special">]</phrase>
+</programlisting>
+      <para>
+        Custom lvalue converters require changes to the Boost.Python core library
+        and are currently not available.
+      </para>
+      <para>
+        P.S.:
+      </para>
+      <para>
+        The "scitbx" files referenced above are available via anonymous
+        CVS:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">cvs</phrase> <phrase role="special">-</phrase><phrase role="identifier">d</phrase><phrase role="special">:</phrase><phrase role="identifier">pserver</phrase><phrase role="special">:</phrase><phrase role="identifier">anonymous</phrase><phrase role="error">@</phrase><phrase role="identifier">cvs</phrase><phrase role="special">.</phrase><phrase role="identifier">cctbx</phrase><phrase role="special">.</phrase><phrase role="identifier">sourceforge</phrase><phrase role="special">.</phrase><phrase role="identifier">net</phrase><phrase role="special">:/</phrase><phrase role="identifier">cvsroot</phrase><phrase role="special">/</phrase><phrase role="identifier">cctbx</phrase> <phrase role="identifier">login</phrase>
+<phrase role="identifier">cvs</phrase> <phrase role="special">-</phrase><phrase role="identifier">d</phrase><phrase role="special">:</phrase><phrase role="identifier">pserver</phrase><phrase role="special">:</phrase><phrase role="identifier">anonymous</phrase><phrase role="error">@</phrase><phrase role="identifier">cvs</phrase><phrase role="special">.</phrase><phrase role="identifier">cctbx</phrase><phrase role="special">.</phrase><phrase role="identifier">sourceforge</phrase><phrase role="special">.</phrase><phrase role="identifier">net</phrase><phrase role="special">:/</phrase><phrase role="identifier">cvsroot</phrase><phrase role="special">/</phrase><phrase role="identifier">cctbx</phrase> <phrase role="identifier">co</phrase> <phrase role="identifier">scitbx</phrase>
+</programlisting>
+    </section>
+    <section id="faq.fatal_error_c1204_compiler_limit">
+      <title><link linkend="faq.fatal_error_c1204_compiler_limit">fatal error C1204:Compiler
+      limit:internal structure overflow</link></title>
+      <para>
+        <emphasis role="bold">Q:</emphasis> <emphasis>I get this error message when
+        compiling a large source file. What can I do?</emphasis>
+      </para>
+      <para>
+        <emphasis role="bold">A:</emphasis> You have two choices:
+      </para>
+      <orderedlist inheritnum="ignore" continuation="restarts">
+        <listitem>
+          <simpara>
+            Upgrade your compiler (preferred)
+          </simpara>
+        </listitem>
+        <listitem>
+          <simpara>
+            Break your source file up into multiple translation units.
+            <para>
+              <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">my_module</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase></computeroutput>:
+            </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">...</phrase>
+<phrase role="keyword">void</phrase> <phrase role="identifier">more_of_my_module</phrase><phrase role="special">();</phrase>
+<phrase role="identifier">BOOST_PYTHON_MODULE</phrase><phrase role="special">(</phrase><phrase role="identifier">my_module</phrase><phrase role="special">)</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"foo"</phrase><phrase role="special">,</phrase> <phrase role="identifier">foo</phrase><phrase role="special">);</phrase>
+  <phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"bar"</phrase><phrase role="special">,</phrase> <phrase role="identifier">bar</phrase><phrase role="special">);</phrase>
+  <phrase role="special">...</phrase>
+  <phrase role="identifier">more_of_my_module</phrase><phrase role="special">();</phrase>
+<phrase role="special">}</phrase>
+</programlisting>
+            <para>
+              <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">more_of_my_module</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase></computeroutput>:
+            </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">void</phrase> <phrase role="identifier">more_of_my_module</phrase><phrase role="special">()</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"baz"</phrase><phrase role="special">,</phrase> <phrase role="identifier">baz</phrase><phrase role="special">);</phrase>
+  <phrase role="special">...</phrase>
+<phrase role="special">}</phrase>
+</programlisting>
+            <para>
+              If you find that a <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">class_</phrase><phrase role="special">&lt;...&gt;</phrase></computeroutput> declaration can't fit in
+              a single source file without triggering the error, you can always pass
+              a reference to the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">class_</phrase></computeroutput>
+              object to a function in another source file, and call some of its member
+              functions (e.g. <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">.</phrase><phrase role="identifier">def</phrase><phrase role="special">(...)</phrase></computeroutput>) in the auxilliary source file:
+            </para>
+            <para>
+              <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">more_of_my_class</phrase><phrase role="special">.</phrase><phrase role="identifier">cpp</phrase></computeroutput>:
+            </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">void</phrase> <phrase role="identifier">more_of_my_class</phrase><phrase role="special">(</phrase><phrase role="keyword">class</phrase><phrase role="special">&amp;</phrase><phrase role="identifier">lt</phrase><phrase role="special">;</phrase><phrase role="identifier">my_class</phrase><phrase role="special">&amp;</phrase><phrase role="identifier">gt</phrase><phrase role="special">;&amp;</phrase><phrase role="identifier">amp</phrase><phrase role="special">;</phrase> <phrase role="identifier">x</phrase><phrase role="special">)</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">x</phrase>
+   <phrase role="special">.</phrase><phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"baz"</phrase><phrase role="special">,</phrase> <phrase role="identifier">baz</phrase><phrase role="special">)</phrase>
+   <phrase role="special">.</phrase><phrase role="identifier">add_property</phrase><phrase role="special">(</phrase><phrase role="string">"xx"</phrase><phrase role="special">,</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">my_class</phrase><phrase role="special">::</phrase><phrase role="identifier">get_xx</phrase><phrase role="special">,</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">my_class</phrase><phrase role="special">::</phrase><phrase role="identifier">set_xx</phrase><phrase role="special">)</phrase>
+   <phrase role="special">;</phrase>
+  <phrase role="special">...</phrase>
+<phrase role="special">}</phrase>
+</programlisting>
+          </simpara>
+        </listitem>
+      </orderedlist>
+    </section>
+    <section id="faq.how_do_i_debug_my_python_extensi">
+      <title><link linkend="faq.how_do_i_debug_my_python_extensi">How do I debug
+      my Python extensions?</link></title>
+      <para>
+        Greg Burley gives the following answer for Unix GCC users:
+      </para>
+      <blockquote>
+        <para>
+          Once you have created a boost python extension for your c++ library or
+          class, you may need to debug the code. Afterall this is one of the reasons
+          for wrapping the library in python. An expected side-effect or benefit
+          of using BPL is that debugging should be isolated to the c++ library that
+          is under test, given that python code is minimal and boost::python either
+          works or it doesn't. (ie. While errors can occur when the wrapping method
+          is invalid, most errors are caught by the compiler ;-).
+        </para>
+        <para>
+          The basic steps required to initiate a gdb session to debug a c++ library
+          via python are shown here. Note, however that you should start the gdb
+          session in the directory that contains your BPL my_ext.so module.
+        </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="identifier">target</phrase> <phrase role="identifier">exec</phrase> <phrase role="identifier">python</phrase>
+<phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="identifier">run</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">from</phrase> <phrase role="identifier">my_ext</phrase> <phrase role="identifier">import</phrase> <phrase role="special">*</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="special">[</phrase><phrase role="identifier">C</phrase><phrase role="special">-</phrase><phrase role="identifier">c</phrase><phrase role="special">]</phrase>
+<phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="keyword">break</phrase> <phrase role="identifier">MyClass</phrase><phrase role="special">::</phrase><phrase role="identifier">MyBuggyFunction</phrase>
+<phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="identifier">cont</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">pyobj</phrase> <phrase role="special">=</phrase> <phrase role="identifier">MyClass</phrase><phrase role="special">()</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">pyobj</phrase><phrase role="special">.</phrase><phrase role="identifier">MyBuggyFunction</phrase><phrase role="special">()</phrase>
+<phrase role="identifier">Breakpoint</phrase> <phrase role="number">1</phrase><phrase role="special">,</phrase> <phrase role="identifier">MyClass</phrase><phrase role="special">::</phrase><phrase role="identifier">MyBuggyFunction</phrase> <phrase role="special">...</phrase>
+<phrase role="identifier">Current</phrase> <phrase role="identifier">language</phrase><phrase role="special">:</phrase>  <phrase role="keyword">auto</phrase><phrase role="special">;</phrase> <phrase role="identifier">currently</phrase> <phrase role="identifier">c</phrase><phrase role="special">++</phrase>
+<phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="keyword">do</phrase> <phrase role="identifier">debugging</phrase> <phrase role="identifier">stuff</phrase>
+</programlisting>
+      </blockquote>
+      <para>
+        Greg's approach works even better using Emacs' "gdb" command, since
+        it will show you each line of source as you step through it.
+      </para>
+      <para>
+        On <emphasis role="bold">Windows</emphasis>, my favorite debugging solution
+        is the debugger that comes with Microsoft Visual C++ 7. This debugger seems
+        to work with code generated by all versions of Microsoft and Metrowerks toolsets;
+        it's rock solid and "just works" without requiring any special
+        tricks from the user.
+      </para>
+      <para>
+        Raoul Gough has provided the following for gdb on Windows:
+      </para>
+      <blockquote>
+        <para>
+          gdb support for Windows DLLs has improved lately, so it is now possible
+          to debug Python extensions using a few tricks. Firstly, you will need an
+          up-to-date gdb with support for minimal symbol extraction from a DLL. Any
+          gdb from version 6 onwards, or Cygwin gdb-20030214-1 and onwards should
+          do. A suitable release will have a section in the gdb.info file under Configuration
+          - Native - Cygwin Native - Non-debug DLL symbols. Refer to that info section
+          for more details of the procedures outlined here.
+        </para>
+        <para>
+          Secondly, it seems necessary to set a breakpoint in the Python interpreter,
+          rather than using ^C to break execution. A good place to set this breakpoint
+          is PyOS_Readline, which will stop execution immediately before reading
+          each interactive Python command. You have to let Python start once under
+          the debugger, so that it loads its own DLL, before you can set the breakpoint:
+        </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="error">$</phrase> <phrase role="identifier">gdb</phrase> <phrase role="identifier">python</phrase>
+<phrase role="identifier">GNU</phrase> <phrase role="identifier">gdb</phrase> <phrase role="number">2003</phrase><phrase role="special">-</phrase><phrase role="number">09</phrase><phrase role="special">-</phrase><phrase role="number">02</phrase><phrase role="special">-</phrase><phrase role="identifier">cvs</phrase> <phrase role="special">(</phrase><phrase role="identifier">cygwin</phrase><phrase role="special">-</phrase><phrase role="identifier">special</phrase><phrase role="special">)</phrase>
+<phrase role="special">[...]</phrase>
+
+<phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="identifier">run</phrase>
+<phrase role="identifier">Starting</phrase> <phrase role="identifier">program</phrase><phrase role="special">:</phrase> <phrase role="special">/</phrase><phrase role="identifier">cygdrive</phrase><phrase role="special">/</phrase><phrase role="identifier">c</phrase><phrase role="special">/</phrase><phrase role="identifier">Python22</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">.</phrase><phrase role="identifier">exe</phrase>
+<phrase role="identifier">Python</phrase> <phrase role="number">2.2</phrase><phrase role="special">.</phrase><phrase role="number">2</phrase> <phrase role="special">(#</phrase><phrase role="number">37</phrase><phrase role="special">,</phrase> <phrase role="identifier">Oct</phrase> <phrase role="number">14</phrase> <phrase role="number">2002</phrase><phrase role="special">,</phrase> <phrase role="number">17</phrase><phrase role="special">:</phrase><phrase role="number">02</phrase><phrase role="special">:</phrase><phrase role="number">34</phrase><phrase role="special">)</phrase> <phrase role="special">[</phrase><phrase role="identifier">MSC</phrase> <phrase role="number">32</phrase> <phrase role="identifier">bit</phrase> <phrase role="special">(</phrase><phrase role="identifier">Intel</phrase><phrase role="special">)]</phrase> <phrase role="identifier">on</phrase> <phrase role="identifier">win32</phrase>
+<phrase role="identifier">Type</phrase> <phrase role="string">"help"</phrase><phrase role="special">,</phrase> <phrase role="string">"copyright"</phrase><phrase role="special">,</phrase> <phrase role="string">"credits"</phrase> <phrase role="keyword">or</phrase> <phrase role="string">"license"</phrase> <phrase role="keyword">for</phrase> <phrase role="identifier">more</phrase> <phrase role="identifier">information</phrase><phrase role="special">.</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="special">^</phrase><phrase role="identifier">Z</phrase>
+
+
+<phrase role="identifier">Program</phrase> <phrase role="identifier">exited</phrase> <phrase role="identifier">normally</phrase><phrase role="special">.</phrase>
+<phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="keyword">break</phrase> <phrase role="special">*&amp;</phrase><phrase role="identifier">PyOS_Readline</phrase>
+<phrase role="identifier">Breakpoint</phrase> <phrase role="number">1</phrase> <phrase role="identifier">at</phrase> <phrase role="number">0x1e04eff0</phrase>
+<phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="identifier">run</phrase>
+<phrase role="identifier">Starting</phrase> <phrase role="identifier">program</phrase><phrase role="special">:</phrase> <phrase role="special">/</phrase><phrase role="identifier">cygdrive</phrase><phrase role="special">/</phrase><phrase role="identifier">c</phrase><phrase role="special">/</phrase><phrase role="identifier">Python22</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">.</phrase><phrase role="identifier">exe</phrase>
+<phrase role="identifier">Python</phrase> <phrase role="number">2.2</phrase><phrase role="special">.</phrase><phrase role="number">2</phrase> <phrase role="special">(#</phrase><phrase role="number">37</phrase><phrase role="special">,</phrase> <phrase role="identifier">Oct</phrase> <phrase role="number">14</phrase> <phrase role="number">2002</phrase><phrase role="special">,</phrase> <phrase role="number">17</phrase><phrase role="special">:</phrase><phrase role="number">02</phrase><phrase role="special">:</phrase><phrase role="number">34</phrase><phrase role="special">)</phrase> <phrase role="special">[</phrase><phrase role="identifier">MSC</phrase> <phrase role="number">32</phrase> <phrase role="identifier">bit</phrase> <phrase role="special">(</phrase><phrase role="identifier">Intel</phrase><phrase role="special">)]</phrase> <phrase role="identifier">on</phrase> <phrase role="identifier">win32</phrase>
+<phrase role="identifier">Type</phrase> <phrase role="string">"help"</phrase><phrase role="special">,</phrase> <phrase role="string">"copyright"</phrase><phrase role="special">,</phrase> <phrase role="string">"credits"</phrase> <phrase role="keyword">or</phrase> <phrase role="string">"license"</phrase> <phrase role="keyword">for</phrase> <phrase role="identifier">more</phrase> <phrase role="identifier">information</phrase><phrase role="special">.</phrase>
+
+<phrase role="identifier">Breakpoint</phrase> <phrase role="number">1</phrase><phrase role="special">,</phrase> <phrase role="number">0x1e04eff0</phrase> <phrase role="identifier">in</phrase> <phrase role="identifier">python22</phrase><phrase role="special">!</phrase><phrase role="identifier">PyOS_Readline</phrase> <phrase role="special">()</phrase>
+   <phrase role="identifier">from</phrase> <phrase role="special">/</phrase><phrase role="identifier">cygdrive</phrase><phrase role="special">/</phrase><phrase role="identifier">c</phrase><phrase role="special">/</phrase><phrase role="identifier">WINNT</phrase><phrase role="special">/</phrase><phrase role="identifier">system32</phrase><phrase role="special">/</phrase><phrase role="identifier">python22</phrase><phrase role="special">.</phrase><phrase role="identifier">dll</phrase>
+<phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="identifier">cont</phrase>
+<phrase role="identifier">Continuing</phrase><phrase role="special">.</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">from</phrase> <phrase role="identifier">my_ext</phrase> <phrase role="identifier">import</phrase> <phrase role="special">*</phrase>
+
+<phrase role="identifier">Breakpoint</phrase> <phrase role="number">1</phrase><phrase role="special">,</phrase> <phrase role="number">0x1e04eff0</phrase> <phrase role="identifier">in</phrase> <phrase role="identifier">python22</phrase><phrase role="special">!</phrase><phrase role="identifier">PyOS_Readline</phrase> <phrase role="special">()</phrase>
+   <phrase role="identifier">from</phrase> <phrase role="special">/</phrase><phrase role="identifier">cygdrive</phrase><phrase role="special">/</phrase><phrase role="identifier">c</phrase><phrase role="special">/</phrase><phrase role="identifier">WINNT</phrase><phrase role="special">/</phrase><phrase role="identifier">system32</phrase><phrase role="special">/</phrase><phrase role="identifier">python22</phrase><phrase role="special">.</phrase><phrase role="identifier">dll</phrase>
+<phrase role="special">(</phrase><phrase role="identifier">gdb</phrase><phrase role="special">)</phrase> <phrase role="special">#</phrase> <phrase role="identifier">my_ext</phrase> <phrase role="identifier">now</phrase> <phrase role="identifier">loaded</phrase> <phrase role="special">(</phrase><phrase role="identifier">with</phrase> <phrase role="identifier">any</phrase> <phrase role="identifier">debugging</phrase> <phrase role="identifier">symbols</phrase> <phrase role="identifier">it</phrase> <phrase role="identifier">contains</phrase><phrase role="special">)</phrase>
+</programlisting>
+      </blockquote>
+      <bridgehead renderas="sect2" id="faq.how_do_i_debug_my_python_extensi.h0">
+        <phrase id="faq.how_do_i_debug_my_python_extensi.debugging_extensions_through_boo"/><link linkend="faq.how_do_i_debug_my_python_extensi.debugging_extensions_through_boo">Debugging
+        extensions through Boost.Build</link>
+      </bridgehead>
+      <para>
+        If you are launching your extension module tests with <ulink url="http://www.boost.org/build">Boost.Build</ulink>
+        using the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">boost</phrase><phrase role="special">-</phrase><phrase role="identifier">python</phrase><phrase role="special">-</phrase><phrase role="identifier">runtest</phrase></computeroutput> rule, you can ask it to launch
+        your debugger for you by adding "--debugger=<emphasis>debugger</emphasis>"
+        to your bjam command-line:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">bjam</phrase> <phrase role="special">-</phrase><phrase role="identifier">sTOOLS</phrase><phrase role="special">=</phrase><phrase role="identifier">vc7</phrase><phrase role="special">.</phrase><phrase role="number">1</phrase> <phrase role="string">"--debugger=devenv /debugexe"</phrase> <phrase role="identifier">test</phrase>
+<phrase role="identifier">bjam</phrase> <phrase role="special">-</phrase><phrase role="identifier">sTOOLS</phrase><phrase role="special">=</phrase><phrase role="identifier">gcc</phrase> <phrase role="special">-</phrase><phrase role="identifier">sPYTHON_LAUNCH</phrase><phrase role="special">=</phrase><phrase role="identifier">gdb</phrase> <phrase role="identifier">test</phrase>
+</programlisting>
+      <para>
+        It can also be extremely useful to add the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">-</phrase><phrase role="identifier">d</phrase><phrase role="special">+</phrase><phrase role="number">2</phrase></computeroutput>
+        option when you run your test, because Boost.Build will then show you the
+        exact commands it uses to invoke it. This will invariably involve setting
+        up PYTHONPATH and other important environment variables such as LD_LIBRARY_PATH
+        which may be needed by your debugger in order to get things to work right.
+      </para>
+    </section>
+    <section id="faq.why_doesn_t_my_operator_work">
+      <title><link linkend="faq.why_doesn_t_my_operator_work">Why doesn't my <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">*=</phrase></computeroutput> operator work?</link></title>
+      <para>
+        <emphasis role="bold">Q:</emphasis> <emphasis>I have exported my class to
+        python, with many overloaded operators. it works fine for me except the
+        <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">*=</phrase></computeroutput> operator. It always tells
+        me "can't multiply sequence with non int type". If I use <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">p1</phrase><phrase role="special">.</phrase><phrase role="identifier">__imul__</phrase><phrase role="special">(</phrase><phrase role="identifier">p2</phrase><phrase role="special">)</phrase></computeroutput>
+        instead of <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">p1</phrase> <phrase role="special">*=</phrase>
+        <phrase role="identifier">p2</phrase></computeroutput>, it successfully executes my
+        code. What's wrong with me?</emphasis>
+      </para>
+      <para>
+        <emphasis role="bold">A:</emphasis> There's nothing wrong with you. This
+        is a bug in Python 2.2. You can see the same effect in Pure Python (you can
+        learn a lot about what's happening in Boost.Python by playing with new-style
+        classes in Pure Python).
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="keyword">class</phrase> <phrase role="identifier">X</phrase><phrase role="special">(</phrase><phrase role="identifier">object</phrase><phrase role="special">):</phrase>
+<phrase role="special">...</phrase>     <phrase role="identifier">def</phrase> <phrase role="identifier">__imul__</phrase><phrase role="special">(</phrase><phrase role="identifier">self</phrase><phrase role="special">,</phrase> <phrase role="identifier">x</phrase><phrase role="special">):</phrase>
+<phrase role="special">...</phrase>         <phrase role="identifier">print</phrase> <phrase role="char">'imul'</phrase>
+<phrase role="special">...</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">x</phrase> <phrase role="special">=</phrase> <phrase role="identifier">X</phrase><phrase role="special">()</phrase>
+<phrase role="special">&gt;&gt;&gt;</phrase> <phrase role="identifier">x</phrase> <phrase role="special">*=</phrase> <phrase role="number">1</phrase>
+</programlisting>
+      <para>
+        To cure this problem, all you need to do is upgrade your Python to version
+        2.2.1 or later.
+      </para>
+    </section>
+    <section id="faq.does_boost_python_work_with_mac_">
+      <title><link linkend="faq.does_boost_python_work_with_mac_">Does Boost.Python
+      work with Mac OS X?</link></title>
+      <para>
+        It is known to work under 10.2.8 and 10.3 using Apple's gcc 3.3 compiler:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">gcc</phrase> <phrase role="special">(</phrase><phrase role="identifier">GCC</phrase><phrase role="special">)</phrase> <phrase role="number">3.3</phrase> <phrase role="number">20030304</phrase> <phrase role="special">(</phrase><phrase role="identifier">Apple</phrase> <phrase role="identifier">Computer</phrase><phrase role="special">,</phrase> <phrase role="identifier">Inc</phrase><phrase role="special">.</phrase> <phrase role="identifier">build</phrase> <phrase role="number">1493</phrase><phrase role="special">)</phrase></programlisting>
+      <para>
+        Under 10.2.8 get the August 2003 gcc update (free at <ulink url="http://connect.apple.com">http://connect.apple.com</ulink>).
+        Under 10.3 get the Xcode Tools v1.0 (also free).
+      </para>
+      <para>
+        Python 2.3 is required. The Python that ships with 10.3 is fine. Under 10.2.8
+        use these commands to install Python as a framework:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">./</phrase><phrase role="identifier">configure</phrase> <phrase role="special">--</phrase><phrase role="identifier">enable</phrase><phrase role="special">-</phrase><phrase role="identifier">framework</phrase>
+<phrase role="identifier">make</phrase>
+<phrase role="identifier">make</phrase> <phrase role="identifier">frameworkinstall</phrase></programlisting>
+      <para>
+        The last command requires root privileges because the target directory is
+        <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">/</phrase><phrase role="identifier">Library</phrase><phrase role="special">/</phrase><phrase role="identifier">Frameworks</phrase><phrase role="special">/</phrase><phrase role="identifier">Python</phrase><phrase role="special">.</phrase><phrase role="identifier">framework</phrase><phrase role="special">/</phrase><phrase role="identifier">Versions</phrase><phrase role="special">/</phrase><phrase role="number">2.3</phrase></computeroutput>. However,
+        the installation does not interfere with the Python version that ships with
+        10.2.8.
+      </para>
+      <para>
+        It is also crucial to increase the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">stacksize</phrase></computeroutput>
+        before starting compilations, e.g.:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">limit</phrase> <phrase role="identifier">stacksize</phrase> <phrase role="number">8192</phrase><phrase role="identifier">k</phrase></programlisting>
+      <para>
+        If the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">stacksize</phrase></computeroutput> is too small
+        the build might crash with internal compiler errors.
+      </para>
+      <para>
+        Sometimes Apple's compiler exhibits a bug by printing an error like the following
+        while compiling a <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">class_</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">your_type</phrase><phrase role="special">&gt;</phrase></computeroutput>
+        template instantiation:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">.../</phrase><phrase role="identifier">inheritance</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase><phrase role="special">:</phrase><phrase role="number">44</phrase><phrase role="special">:</phrase> <phrase role="identifier">error</phrase><phrase role="special">:</phrase> <phrase role="identifier">cannot</phrase>
+  <phrase role="keyword">dynamic_cast</phrase> <phrase role="error">`</phrase><phrase role="identifier">p</phrase><phrase role="char">' (of type `struct cctbx::boost_python::&lt;unnamed&gt;::add_pair*
+  '</phrase><phrase role="special">)</phrase> <phrase role="identifier">to</phrase> <phrase role="identifier">type</phrase> <phrase role="error">`</phrase><phrase role="keyword">void</phrase><phrase role="special">*</phrase><phrase role="error">'</phrase> <phrase role="special">(</phrase><phrase role="identifier">source</phrase> <phrase role="identifier">type</phrase> <phrase role="identifier">is</phrase> <phrase role="keyword">not</phrase> <phrase role="identifier">polymorphic</phrase><phrase role="special">)</phrase>
+</programlisting>
+      <para>
+        We do not know a general workaround, but if the definition of <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">your_type</phrase></computeroutput> can be modified the following
+        was found to work in all cases encountered so far:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">struct</phrase> <phrase role="identifier">your_type</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="comment">// before defining any member data</phrase>
+<phrase role="preprocessor">#if</phrase> <phrase role="identifier">defined</phrase><phrase role="special">(</phrase><phrase role="identifier">__MACH__</phrase><phrase role="special">)</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">amp</phrase><phrase role="special">;&amp;</phrase><phrase role="identifier">amp</phrase><phrase role="special">;</phrase> <phrase role="identifier">defined</phrase><phrase role="special">(</phrase><phrase role="identifier">__APPLE_CC__</phrase><phrase role="special">)</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">amp</phrase><phrase role="special">;&amp;</phrase><phrase role="identifier">amp</phrase><phrase role="special">;</phrase> <phrase role="identifier">__APPLE_CC__</phrase> <phrase role="special">==</phrase> <phrase role="number">1493</phrase>
+  <phrase role="keyword">bool</phrase> <phrase role="identifier">dummy_</phrase><phrase role="special">;</phrase>
+<phrase role="preprocessor">#endif</phrase>
+  <phrase role="comment">// now your member data, e.g.</phrase>
+  <phrase role="keyword">double</phrase> <phrase role="identifier">x</phrase><phrase role="special">;</phrase>
+  <phrase role="keyword">int</phrase> <phrase role="identifier">j</phrase><phrase role="special">;</phrase>
+  <phrase role="comment">// etc.</phrase>
+<phrase role="special">};</phrase>
+</programlisting>
+    </section>
+    <section id="faq.how_can_i_find_the_existing_pyob">
+      <title><link linkend="faq.how_can_i_find_the_existing_pyob">How can I find
+      the existing PyObject that holds a C++ object?</link></title>
+      <blockquote>
+        <para>
+          "I am wrapping a function that always returns a pointer to an already-held
+          C++ object."
+        </para>
+      </blockquote>
+      <para>
+        One way to do that is to hijack the mechanisms used for wrapping a class
+        with virtual functions. If you make a wrapper class with an initial PyObject*
+        constructor argument and store that PyObject* as "self", you can
+        get back to it by casting down to that wrapper type in a thin wrapper function.
+        For example:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">class</phrase> <phrase role="identifier">X</phrase> <phrase role="special">{</phrase> <phrase role="identifier">X</phrase><phrase role="special">(</phrase><phrase role="keyword">int</phrase><phrase role="special">);</phrase> <phrase role="keyword">virtual</phrase> <phrase role="special">~</phrase><phrase role="identifier">X</phrase><phrase role="special">();</phrase> <phrase role="special">...</phrase> <phrase role="special">};</phrase>
+<phrase role="identifier">X</phrase><phrase role="special">*</phrase> <phrase role="identifier">f</phrase><phrase role="special">();</phrase>  <phrase role="comment">// known to return Xs that are managed by Python objects</phrase>
+
+
+<phrase role="comment">// wrapping code</phrase>
+
+<phrase role="keyword">struct</phrase> <phrase role="identifier">X_wrap</phrase> <phrase role="special">:</phrase> <phrase role="identifier">X</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">X_wrap</phrase><phrase role="special">(</phrase><phrase role="identifier">PyObject</phrase><phrase role="special">*</phrase> <phrase role="identifier">self</phrase><phrase role="special">,</phrase> <phrase role="keyword">int</phrase> <phrase role="identifier">v</phrase><phrase role="special">)</phrase> <phrase role="special">:</phrase> <phrase role="identifier">self</phrase><phrase role="special">(</phrase><phrase role="identifier">self</phrase><phrase role="special">),</phrase> <phrase role="identifier">X</phrase><phrase role="special">(</phrase><phrase role="identifier">v</phrase><phrase role="special">)</phrase> <phrase role="special">{}</phrase>
+  <phrase role="identifier">PyObject</phrase><phrase role="special">*</phrase> <phrase role="identifier">self</phrase><phrase role="special">;</phrase>
+<phrase role="special">};</phrase>
+
+<phrase role="identifier">handle</phrase><phrase role="special">&lt;&gt;</phrase> <phrase role="identifier">f_wrap</phrase><phrase role="special">()</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">X_wrap</phrase><phrase role="special">*</phrase> <phrase role="identifier">xw</phrase> <phrase role="special">=</phrase> <phrase role="keyword">dynamic_cast</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">X_wrap</phrase><phrase role="special">*&gt;(</phrase><phrase role="identifier">f</phrase><phrase role="special">());</phrase>
+  <phrase role="identifier">assert</phrase><phrase role="special">(</phrase><phrase role="identifier">xw</phrase> <phrase role="special">!=</phrase> <phrase role="number">0</phrase><phrase role="special">);</phrase>
+  <phrase role="keyword">return</phrase> <phrase role="identifier">handle</phrase><phrase role="special">&lt;&gt;(</phrase><phrase role="identifier">borrowed</phrase><phrase role="special">(</phrase><phrase role="identifier">xw</phrase><phrase role="special">-&gt;</phrase><phrase role="identifier">self</phrase><phrase role="special">));</phrase>
+<phrase role="special">}</phrase>
+
+<phrase role="special">...</phrase>
+
+<phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"f"</phrase><phrase role="special">,</phrase> <phrase role="identifier">f_wrap</phrase><phrase role="special">());</phrase>
+<phrase role="identifier">class_</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">X</phrase><phrase role="special">,</phrase><phrase role="identifier">X_wrap</phrase><phrase role="special">,</phrase><phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">noncopyable</phrase><phrase role="special">&gt;(</phrase><phrase role="string">"X"</phrase><phrase role="special">,</phrase> <phrase role="identifier">init</phrase><phrase role="special">&lt;</phrase><phrase role="keyword">int</phrase><phrase role="special">&gt;())</phrase>
+ <phrase role="special">...</phrase>
+ <phrase role="special">;</phrase>
+</programlisting>
+      <para>
+        Of course, if X has no virtual functions you'll have to use <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">static_cast</phrase></computeroutput> instead of <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">dynamic_cast</phrase></computeroutput>
+        with no runtime check that it's valid. This approach also only works if the
+        <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">X</phrase></computeroutput> object was constructed
+        from Python, because <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">X</phrase></computeroutput>s constructed
+        from C++ are of course never <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">X_wrap</phrase></computeroutput>
+        objects.
+      </para>
+      <para>
+        Another approach to this requires you to change your C++ code a bit; if that's
+        an option for you it might be a better way to go. work we've been meaning
+        to get to anyway. When a <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">shared_ptr</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">X</phrase><phrase role="special">&gt;</phrase></computeroutput>
+        is converted from Python, the shared_ptr actually manages a reference to
+        the containing Python object. When a shared_ptr&lt;X&gt; is converted back
+        to Python, the library checks to see if it's one of those "Python object
+        managers" and if so just returns the original Python object. So you
+        could just write <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">object</phrase><phrase role="special">(</phrase><phrase role="identifier">p</phrase><phrase role="special">)</phrase></computeroutput> to get
+        the Python object back. To exploit this you'd have to be able to change the
+        C++ code you're wrapping so that it deals with shared_ptr instead of raw
+        pointers.
+      </para>
+      <para>
+        There are other approaches too. The functions that receive the Python object
+        that you eventually want to return could be wrapped with a thin wrapper that
+        records the correspondence between the object address and its containing
+        Python object, and you could have your f_wrap function look in that mapping
+        to get the Python object out.
+      </para>
+    </section>
+    <section id="faq.how_can_i_wrap_a_function_which0">
+      <title><link linkend="faq.how_can_i_wrap_a_function_which0">How can I wrap
+      a function which needs to take ownership of a raw pointer?</link></title>
+      <para>
+        <emphasis role="bold">Q:</emphasis> Part of an API that I'm wrapping goes
+        something like this:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">struct</phrase> <phrase role="identifier">A</phrase> <phrase role="special">{};</phrase> <phrase role="keyword">struct</phrase> <phrase role="identifier">B</phrase> <phrase role="special">{</phrase> <phrase role="keyword">void</phrase> <phrase role="identifier">add</phrase><phrase role="special">(</phrase> <phrase role="identifier">A</phrase><phrase role="special">*</phrase> <phrase role="special">);</phrase> <phrase role="special">}</phrase>
+<phrase role="identifier">where</phrase> <phrase role="identifier">B</phrase><phrase role="special">::</phrase><phrase role="identifier">add</phrase><phrase role="special">()</phrase> <phrase role="identifier">takes</phrase> <phrase role="identifier">ownership</phrase> <phrase role="identifier">of</phrase> <phrase role="identifier">the</phrase> <phrase role="identifier">pointer</phrase> <phrase role="identifier">passed</phrase> <phrase role="identifier">to</phrase> <phrase role="identifier">it</phrase><phrase role="special">.</phrase>
+</programlisting>
+      <para>
+        However:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">a</phrase> <phrase role="special">=</phrase> <phrase role="identifier">mod</phrase><phrase role="special">.</phrase><phrase role="identifier">A</phrase><phrase role="special">()</phrase>
+<phrase role="identifier">b</phrase> <phrase role="special">=</phrase> <phrase role="identifier">mod</phrase><phrase role="special">.</phrase><phrase role="identifier">B</phrase><phrase role="special">()</phrase>
+<phrase role="identifier">b</phrase><phrase role="special">.</phrase><phrase role="identifier">add</phrase><phrase role="special">(</phrase> <phrase role="identifier">a</phrase> <phrase role="special">)</phrase>
+<phrase role="identifier">del</phrase> <phrase role="identifier">a</phrase>
+<phrase role="identifier">del</phrase> <phrase role="identifier">b</phrase>
+<phrase role="preprocessor"># python</phrase> <phrase role="identifier">interpreter</phrase> <phrase role="identifier">crashes</phrase>
+<phrase role="preprocessor"># later</phrase> <phrase role="identifier">due</phrase> <phrase role="identifier">to</phrase> <phrase role="identifier">memory</phrase> <phrase role="identifier">corruption</phrase><phrase role="special">.</phrase>
+</programlisting>
+      <para>
+        Even binding the lifetime of a to b via <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">with_custodian_and_ward</phrase></computeroutput>
+        doesn't prevent the python object a from ultimately trying to delete the
+        object it's pointing to. Is there a way to accomplish a 'transfer-of-ownership'
+        of a wrapped C++ object?
+      </para>
+      <para>
+        --Bruce Lowery
+      </para>
+      <para>
+        Yes: Make sure the C++ object is held by auto_ptr:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">class_</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">A</phrase><phrase role="special">,</phrase> <phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">auto_ptr</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">A</phrase><phrase role="special">&gt;</phrase> <phrase role="special">&gt;(</phrase><phrase role="string">"A"</phrase><phrase role="special">)</phrase>
+  <phrase role="special">...</phrase>
+  <phrase role="special">;</phrase>
+</programlisting>
+      <para>
+        Then make a thin wrapper function which takes an auto_ptr parameter:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">void</phrase> <phrase role="identifier">b_insert</phrase><phrase role="special">(</phrase><phrase role="identifier">B</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">b</phrase><phrase role="special">,</phrase> <phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">auto_ptr</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">A</phrase><phrase role="special">&gt;</phrase> <phrase role="identifier">a</phrase><phrase role="special">)</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">b</phrase><phrase role="special">.</phrase><phrase role="identifier">insert</phrase><phrase role="special">(</phrase><phrase role="identifier">a</phrase><phrase role="special">.</phrase><phrase role="identifier">get</phrase><phrase role="special">());</phrase>
+  <phrase role="identifier">a</phrase><phrase role="special">.</phrase><phrase role="identifier">release</phrase><phrase role="special">();</phrase>
+<phrase role="special">}</phrase>
+</programlisting>
+      <para>
+        Wrap that as B.add. Note that pointers returned via <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">manage_new_object</phrase></computeroutput>
+        will also be held by <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">auto_ptr</phrase></computeroutput>,
+        so this transfer-of-ownership will also work correctly.
+      </para>
+    </section>
+    <section id="faq.compilation_takes_too_much_time_">
+      <title><link linkend="faq.compilation_takes_too_much_time_">Compilation takes
+      too much time and eats too much memory! What can I do to make it faster?</link></title>
+      <para>
+        Please refer to the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Reducing</phrase> <phrase role="identifier">Compiling</phrase> <phrase role="identifier">Time</phrase></computeroutput>
+        section in the <ulink url="tutorial/index.html">Tutorial</ulink>.
+      </para>
+    </section>
+    <section id="faq.how_do_i_create_sub_packages_usi">
+      <title><link linkend="faq.how_do_i_create_sub_packages_usi">How do I create
+      sub-packages using Boost.Python?</link></title>
+      <para>
+        Please refer to the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">Creating</phrase> <phrase role="identifier">Packages</phrase></computeroutput> section in the <ulink url="tutorial/index.html">Tutorial</ulink>.
+      </para>
+    </section>
+    <section id="faq.error_c2064_term_does_not_evalua">
+      <title><link linkend="faq.error_c2064_term_does_not_evalua">error C2064: term
+      does not evaluate to a function taking 2 arguments</link></title>
+      <para>
+        <emphasis>Niall Douglas provides these notes:</emphasis>
+      </para>
+      <para>
+        If you see Microsoft Visual C++ 7.1 (MS Visual Studio .NET 2003) issue an
+        error message like the following it is most likely due to a bug in the compiler:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">boost</phrase><phrase role="special">\</phrase><phrase role="identifier">boost</phrase><phrase role="special">\</phrase><phrase role="identifier">python</phrase><phrase role="special">\</phrase><phrase role="identifier">detail</phrase><phrase role="special">\</phrase><phrase role="identifier">invoke</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase><phrase role="special">(</phrase><phrase role="number">76</phrase><phrase role="special">):</phrase>
+<phrase role="identifier">error</phrase> <phrase role="identifier">C2064</phrase><phrase role="special">:</phrase> <phrase role="identifier">term</phrase> <phrase role="identifier">does</phrase> <phrase role="keyword">not</phrase> <phrase role="identifier">evaluate</phrase> <phrase role="identifier">to</phrase> <phrase role="identifier">a</phrase> <phrase role="identifier">function</phrase> <phrase role="identifier">taking</phrase> <phrase role="number">2</phrase> <phrase role="identifier">arguments</phrase><phrase role="error">"</phrase>
+</programlisting>
+      <para>
+        This message is triggered by code like the following:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="preprocessor">#include</phrase> <phrase role="special">&lt;</phrase><phrase role="identifier">boost</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase><phrase role="special">&gt;</phrase>
+
+<phrase role="keyword">using</phrase> <phrase role="keyword">namespace</phrase> <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">;</phrase>
+
+<phrase role="keyword">class</phrase> <phrase role="identifier">FXThread</phrase>
+<phrase role="special">{</phrase>
+<phrase role="keyword">public</phrase><phrase role="special">:</phrase>
+  <phrase role="keyword">bool</phrase> <phrase role="identifier">setAutoDelete</phrase><phrase role="special">(</phrase><phrase role="keyword">bool</phrase> <phrase role="identifier">doso</phrase><phrase role="special">)</phrase> <phrase role="keyword">throw</phrase><phrase role="special">();</phrase>
+<phrase role="special">};</phrase>
+
+<phrase role="keyword">void</phrase> <phrase role="identifier">Export_FXThread</phrase><phrase role="special">()</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">class_</phrase><phrase role="special">&lt;</phrase> <phrase role="identifier">FXThread</phrase> <phrase role="special">&gt;(</phrase><phrase role="string">"FXThread"</phrase><phrase role="special">)</phrase>
+      <phrase role="special">.</phrase><phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"setAutoDelete"</phrase><phrase role="special">,</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">amp</phrase><phrase role="special">;</phrase><phrase role="identifier">FXThread</phrase><phrase role="special">::</phrase><phrase role="identifier">setAutoDelete</phrase><phrase role="special">)</phrase>
+  <phrase role="special">;</phrase>
+<phrase role="special">}</phrase>
+</programlisting>
+      <para>
+        The bug is related to the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">throw</phrase><phrase role="special">()</phrase></computeroutput> modifier. As a workaround cast off the
+        modifier. E.g.:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">.</phrase><phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"setAutoDelete"</phrase><phrase role="special">,</phrase> <phrase role="special">(</phrase><phrase role="keyword">bool</phrase> <phrase role="special">(</phrase><phrase role="identifier">FXThread</phrase><phrase role="special">::*)(</phrase><phrase role="keyword">bool</phrase><phrase role="special">))</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">FXThread</phrase><phrase role="special">::</phrase><phrase role="identifier">setAutoDelete</phrase><phrase role="special">)</phrase>
+</programlisting>
+      <para>
+        (The bug has been reported to Microsoft.)
+      </para>
+    </section>
+    <section id="faq.how_can_i_automatically_convert_">
+      <title><link linkend="faq.how_can_i_automatically_convert_">How can I automatically
+      convert my custom string type to and from a Python string?</link></title>
+      <para>
+        <emphasis>Ralf W. Grosse-Kunstleve provides these notes:</emphasis>
+      </para>
+      <para>
+        Below is a small, self-contained demo extension module that shows how to
+        do this. Here is the corresponding trivial test:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">import</phrase> <phrase role="identifier">custom_string</phrase>
+<phrase role="identifier">assert</phrase> <phrase role="identifier">custom_string</phrase><phrase role="special">.</phrase><phrase role="identifier">hello</phrase><phrase role="special">()</phrase> <phrase role="special">==</phrase> <phrase role="string">"Hello world."</phrase>
+<phrase role="identifier">assert</phrase> <phrase role="identifier">custom_string</phrase><phrase role="special">.</phrase><phrase role="identifier">size</phrase><phrase role="special">(</phrase><phrase role="string">"california"</phrase><phrase role="special">)</phrase> <phrase role="special">==</phrase> <phrase role="number">10</phrase>
+</programlisting>
+      <para>
+        If you look at the code you will find:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <simpara>
+            A custom <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">to_python</phrase></computeroutput> converter
+            (easy): <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">custom_string_to_python_str</phrase></computeroutput>
+          </simpara>
+        </listitem>
+        <listitem>
+          <simpara>
+            A custom lvalue converter (needs more code): <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">custom_string_from_python_str</phrase></computeroutput>
+          </simpara>
+        </listitem>
+      </itemizedlist>
+      <para>
+        The custom converters are registered in the global Boost.Python registry
+        near the top of the module initialization function. Once flow control has
+        passed through the registration code the automatic conversions from and to
+        Python strings will work in any module imported in the same process.
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="preprocessor">#include</phrase> <phrase role="special">&lt;</phrase><phrase role="identifier">boost</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">/</phrase><phrase role="identifier">module</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase><phrase role="special">&gt;</phrase>
+<phrase role="preprocessor">#include</phrase> <phrase role="special">&lt;</phrase><phrase role="identifier">boost</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">/</phrase><phrase role="identifier">def</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase><phrase role="special">&gt;</phrase>
+<phrase role="preprocessor">#include</phrase> <phrase role="special">&lt;</phrase><phrase role="identifier">boost</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">/</phrase><phrase role="identifier">to_python_converter</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase><phrase role="special">&gt;</phrase>
+
+<phrase role="keyword">namespace</phrase> <phrase role="identifier">sandbox</phrase> <phrase role="special">{</phrase> <phrase role="keyword">namespace</phrase> <phrase role="special">{</phrase>
+
+<phrase role="keyword">class</phrase> <phrase role="identifier">custom_string</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="keyword">public</phrase><phrase role="special">:</phrase>
+    <phrase role="identifier">custom_string</phrase><phrase role="special">()</phrase> <phrase role="special">{}</phrase>
+    <phrase role="identifier">custom_string</phrase><phrase role="special">(</phrase><phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">string</phrase> <phrase role="keyword">const</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">value</phrase><phrase role="special">)</phrase> <phrase role="special">:</phrase> <phrase role="identifier">value_</phrase><phrase role="special">(</phrase><phrase role="identifier">value</phrase><phrase role="special">)</phrase> <phrase role="special">{}</phrase>
+    <phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">string</phrase> <phrase role="keyword">const</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">value</phrase><phrase role="special">()</phrase> <phrase role="keyword">const</phrase> <phrase role="special">{</phrase> <phrase role="keyword">return</phrase> <phrase role="identifier">value_</phrase><phrase role="special">;</phrase> <phrase role="special">}</phrase>
+  <phrase role="keyword">private</phrase><phrase role="special">:</phrase>
+    <phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">string</phrase> <phrase role="identifier">value_</phrase><phrase role="special">;</phrase>
+<phrase role="special">};</phrase>
+
+<phrase role="keyword">struct</phrase> <phrase role="identifier">custom_string_to_python_str</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="keyword">static</phrase> <phrase role="identifier">PyObject</phrase><phrase role="special">*</phrase> <phrase role="identifier">convert</phrase><phrase role="special">(</phrase><phrase role="identifier">custom_string</phrase> <phrase role="keyword">const</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">s</phrase><phrase role="special">)</phrase>
+  <phrase role="special">{</phrase>
+    <phrase role="keyword">return</phrase> <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">incref</phrase><phrase role="special">(</phrase><phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">object</phrase><phrase role="special">(</phrase><phrase role="identifier">s</phrase><phrase role="special">.</phrase><phrase role="identifier">value</phrase><phrase role="special">()).</phrase><phrase role="identifier">ptr</phrase><phrase role="special">());</phrase>
+  <phrase role="special">}</phrase>
+<phrase role="special">};</phrase>
+
+<phrase role="keyword">struct</phrase> <phrase role="identifier">custom_string_from_python_str</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">custom_string_from_python_str</phrase><phrase role="special">()</phrase>
+  <phrase role="special">{</phrase>
+    <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">converter</phrase><phrase role="special">::</phrase><phrase role="identifier">registry</phrase><phrase role="special">::</phrase><phrase role="identifier">push_back</phrase><phrase role="special">(</phrase>
+      <phrase role="special">&amp;</phrase><phrase role="identifier">convertible</phrase><phrase role="special">,</phrase>
+      <phrase role="special">&amp;</phrase><phrase role="identifier">construct</phrase><phrase role="special">,</phrase>
+      <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">type_id</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">custom_string</phrase><phrase role="special">&gt;());</phrase>
+  <phrase role="special">}</phrase>
+
+  <phrase role="keyword">static</phrase> <phrase role="keyword">void</phrase><phrase role="special">*</phrase> <phrase role="identifier">convertible</phrase><phrase role="special">(</phrase><phrase role="identifier">PyObject</phrase><phrase role="special">*</phrase> <phrase role="identifier">obj_ptr</phrase><phrase role="special">)</phrase>
+  <phrase role="special">{</phrase>
+    <phrase role="keyword">if</phrase> <phrase role="special">(!</phrase><phrase role="identifier">PyString_Check</phrase><phrase role="special">(</phrase><phrase role="identifier">obj_ptr</phrase><phrase role="special">))</phrase> <phrase role="keyword">return</phrase> <phrase role="number">0</phrase><phrase role="special">;</phrase>
+    <phrase role="keyword">return</phrase> <phrase role="identifier">obj_ptr</phrase><phrase role="special">;</phrase>
+  <phrase role="special">}</phrase>
+
+  <phrase role="keyword">static</phrase> <phrase role="keyword">void</phrase> <phrase role="identifier">construct</phrase><phrase role="special">(</phrase>
+    <phrase role="identifier">PyObject</phrase><phrase role="special">*</phrase> <phrase role="identifier">obj_ptr</phrase><phrase role="special">,</phrase>
+    <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">converter</phrase><phrase role="special">::</phrase><phrase role="identifier">rvalue_from_python_stage1_data</phrase><phrase role="special">*</phrase> <phrase role="identifier">data</phrase><phrase role="special">)</phrase>
+  <phrase role="special">{</phrase>
+    <phrase role="keyword">const</phrase> <phrase role="keyword">char</phrase><phrase role="special">*</phrase> <phrase role="identifier">value</phrase> <phrase role="special">=</phrase> <phrase role="identifier">PyString_AsString</phrase><phrase role="special">(</phrase><phrase role="identifier">obj_ptr</phrase><phrase role="special">);</phrase>
+    <phrase role="keyword">if</phrase> <phrase role="special">(</phrase><phrase role="identifier">value</phrase> <phrase role="special">==</phrase> <phrase role="number">0</phrase><phrase role="special">)</phrase> <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">throw_error_already_set</phrase><phrase role="special">();</phrase>
+    <phrase role="keyword">void</phrase><phrase role="special">*</phrase> <phrase role="identifier">storage</phrase> <phrase role="special">=</phrase> <phrase role="special">(</phrase>
+      <phrase role="special">(</phrase><phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">converter</phrase><phrase role="special">::</phrase><phrase role="identifier">rvalue_from_python_storage</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">custom_string</phrase><phrase role="special">&gt;*)</phrase>
+        <phrase role="identifier">data</phrase><phrase role="special">)-&gt;</phrase><phrase role="identifier">storage</phrase><phrase role="special">.</phrase><phrase role="identifier">bytes</phrase><phrase role="special">;</phrase>
+    <phrase role="keyword">new</phrase> <phrase role="special">(</phrase><phrase role="identifier">storage</phrase><phrase role="special">)</phrase> <phrase role="identifier">custom_string</phrase><phrase role="special">(</phrase><phrase role="identifier">value</phrase><phrase role="special">);</phrase>
+    <phrase role="identifier">data</phrase><phrase role="special">-&gt;</phrase><phrase role="identifier">convertible</phrase> <phrase role="special">=</phrase> <phrase role="identifier">storage</phrase><phrase role="special">;</phrase>
+  <phrase role="special">}</phrase>
+<phrase role="special">};</phrase>
+
+<phrase role="identifier">custom_string</phrase> <phrase role="identifier">hello</phrase><phrase role="special">()</phrase> <phrase role="special">{</phrase> <phrase role="keyword">return</phrase> <phrase role="identifier">custom_string</phrase><phrase role="special">(</phrase><phrase role="string">"Hello world."</phrase><phrase role="special">);</phrase> <phrase role="special">}</phrase>
+
+<phrase role="identifier">std</phrase><phrase role="special">::</phrase><phrase role="identifier">size_t</phrase> <phrase role="identifier">size</phrase><phrase role="special">(</phrase><phrase role="identifier">custom_string</phrase> <phrase role="keyword">const</phrase> <phrase role="special">&amp;</phrase><phrase role="identifier">s</phrase><phrase role="special">)</phrase> <phrase role="special">{</phrase> <phrase role="keyword">return</phrase> <phrase role="identifier">s</phrase><phrase role="special">.</phrase><phrase role="identifier">value</phrase><phrase role="special">().</phrase><phrase role="identifier">size</phrase><phrase role="special">();</phrase> <phrase role="special">}</phrase>
+
+<phrase role="keyword">void</phrase> <phrase role="identifier">init_module</phrase><phrase role="special">()</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="keyword">using</phrase> <phrase role="keyword">namespace</phrase> <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">;</phrase>
+
+  <phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">to_python_converter</phrase><phrase role="special">&lt;</phrase>
+    <phrase role="identifier">custom_string</phrase><phrase role="special">,</phrase>
+    <phrase role="identifier">custom_string_to_python_str</phrase><phrase role="special">&gt;();</phrase>
+
+  <phrase role="identifier">custom_string_from_python_str</phrase><phrase role="special">();</phrase>
+
+  <phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"hello"</phrase><phrase role="special">,</phrase> <phrase role="identifier">hello</phrase><phrase role="special">);</phrase>
+  <phrase role="identifier">def</phrase><phrase role="special">(</phrase><phrase role="string">"size"</phrase><phrase role="special">,</phrase> <phrase role="identifier">size</phrase><phrase role="special">);</phrase>
+<phrase role="special">}</phrase>
+
+<phrase role="special">}}</phrase> <phrase role="comment">// namespace sandbox::&lt;anonymous&gt;</phrase>
+
+<phrase role="identifier">BOOST_PYTHON_MODULE</phrase><phrase role="special">(</phrase><phrase role="identifier">custom_string</phrase><phrase role="special">)</phrase>
+<phrase role="special">{</phrase>
+  <phrase role="identifier">sandbox</phrase><phrase role="special">::</phrase><phrase role="identifier">init_module</phrase><phrase role="special">();</phrase>
+<phrase role="special">}</phrase>
+</programlisting>
+    </section>
+    <section id="faq.why_is_my_automatic_to_python_co">
+      <title><link linkend="faq.why_is_my_automatic_to_python_co">Why is my automatic
+      to-python conversion not being found?</link></title>
+      <para>
+        <emphasis>Niall Douglas provides these notes:</emphasis>
+      </para>
+      <para>
+        If you define custom converters similar to the ones shown above the <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">def_readonly</phrase><phrase role="special">()</phrase></computeroutput>
+        and <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">def_readwrite</phrase><phrase role="special">()</phrase></computeroutput>
+        member functions provided by <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">boost</phrase><phrase role="special">::</phrase><phrase role="identifier">python</phrase><phrase role="special">::</phrase><phrase role="identifier">class_</phrase></computeroutput>
+        for direct access to your member data will not work as expected. This is
+        because <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">def_readonly</phrase><phrase role="special">(</phrase><phrase role="string">"bar"</phrase><phrase role="special">,&amp;</phrase><phrase role="identifier">foo</phrase><phrase role="special">::</phrase><phrase role="identifier">bar</phrase><phrase role="special">)</phrase></computeroutput> is equivalent to:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">.</phrase><phrase role="identifier">add_property</phrase><phrase role="special">(</phrase><phrase role="string">"bar"</phrase><phrase role="special">,</phrase> <phrase role="identifier">make_getter</phrase><phrase role="special">(&amp;</phrase><phrase role="identifier">foo</phrase><phrase role="special">::</phrase><phrase role="identifier">bar</phrase><phrase role="special">,</phrase> <phrase role="identifier">return_internal_reference</phrase><phrase role="special">()))</phrase>
+</programlisting>
+      <para>
+        Similarly, <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">def_readwrite</phrase><phrase role="special">(</phrase><phrase role="string">"bar"</phrase><phrase role="special">,&amp;</phrase><phrase role="identifier">foo</phrase><phrase role="special">::</phrase><phrase role="identifier">bar</phrase><phrase role="special">)</phrase></computeroutput>
+        is equivalent to:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">.</phrase><phrase role="identifier">add_property</phrase><phrase role="special">(</phrase><phrase role="string">"bar"</phrase><phrase role="special">,</phrase> <phrase role="identifier">make_getter</phrase><phrase role="special">(&amp;</phrase><phrase role="identifier">foo</phrase><phrase role="special">::</phrase><phrase role="identifier">bar</phrase><phrase role="special">,</phrase> <phrase role="identifier">return_internal_reference</phrase><phrase role="special">()),</phrase>
+                   <phrase role="identifier">make_setter</phrase><phrase role="special">(&amp;</phrase><phrase role="identifier">foo</phrase><phrase role="special">::</phrase><phrase role="identifier">bar</phrase><phrase role="special">,</phrase> <phrase role="identifier">return_internal_reference</phrase><phrase role="special">())</phrase>
+</programlisting>
+      <para>
+        In order to define return value policies compatible with the custom conversions
+        replace <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">def_readonly</phrase><phrase role="special">()</phrase></computeroutput>
+        and <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">def_readwrite</phrase><phrase role="special">()</phrase></computeroutput>
+        by <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">add_property</phrase><phrase role="special">()</phrase></computeroutput>.
+        E.g.:
+      </para>
+<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="special">.</phrase><phrase role="identifier">add_property</phrase><phrase role="special">(</phrase><phrase role="string">"bar"</phrase><phrase role="special">,</phrase> <phrase role="identifier">make_getter</phrase><phrase role="special">(&amp;</phrase><phrase role="identifier">foo</phrase><phrase role="special">::</phrase><phrase role="identifier">bar</phrase><phrase role="special">,</phrase> <phrase role="identifier">return_value_policy</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">return_by_value</phrase><phrase role="special">&gt;()),</phrase>
+                   <phrase role="identifier">make_setter</phrase><phrase role="special">(&amp;</phrase><phrase role="identifier">foo</phrase><phrase role="special">::</phrase><phrase role="identifier">bar</phrase><phrase role="special">,</phrase> <phrase role="identifier">return_value_policy</phrase><phrase role="special">&lt;</phrase><phrase role="identifier">return_by_value</phrase><phrase role="special">&gt;()))</phrase>
+</programlisting>
+    </section>
+    <section id="faq.is_boost_python_thread_aware_com">
+      <title><link linkend="faq.is_boost_python_thread_aware_com">Is Boost.Python
+      thread-aware/compatible with multiple interpreters?</link></title>
+      <para>
+        <emphasis>Niall Douglas provides these notes:</emphasis>
+      </para>
+      <para>
+        The quick answer to this is: no.
+      </para>
+      <para>
+        The longer answer is that it can be patched to be so, but it's complex. You
+        will need to add custom lock/unlock wrapping of every time your code enters
+        Boost.Python (particularly every virtual function override) plus heavily
+        modify <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">boost</phrase><phrase role="special">/</phrase><phrase role="identifier">python</phrase><phrase role="special">/</phrase><phrase role="identifier">detail</phrase><phrase role="special">/</phrase><phrase role="identifier">invoke</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase></computeroutput> with custom unlock/lock wrapping of
+        every time Boost.Python enters your code. You must furthermore take care
+        to <emphasis>not</emphasis> unlock/lock when Boost.Python is invoking iterator
+        changes via <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">invoke</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase></computeroutput>.
+      </para>
+      <para>
+        There is a patched <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">invoke</phrase><phrase role="special">.</phrase><phrase role="identifier">hpp</phrase></computeroutput> posted
+        on the C++-SIG mailing list archives and you can find a real implementation
+        of all the machinery necessary to fully implement this in the TnFOX project
+        at <ulink url="http://sourceforge.net/projects/tnfox/">this</ulink> SourceForge
+        project location.
+      </para>
+    </section>
+  </chapter>
+  <chapter id="glossary" last-revision="$Date: 2016/08/05 20:22:59 $">
+    <title>Glossary</title>
+    <variablelist>
+      <title/>
+      <varlistentry>
+        <term>arity <anchor id="arity"/></term>
+        <listitem>
+          <para>
+            The number of argumnts accepted by a function or member function. Unless
+            otherwise specified, the hidden <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">this</phrase></computeroutput>
+            argument to member functions is not counted when specifying arity.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>ntbs <anchor id="ntbs"/></term>
+        <listitem>
+          <para>
+            Null-Terminated Byte String, or 'C'-string. C++ string literals are
+            <emphasis role="bold">ntbs</emphasis>es. An <emphasis role="bold">ntbs</emphasis>
+            must never be null.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>raise <anchor id="raise"/></term>
+        <listitem>
+          <para>
+            Exceptions in Python are "raised", not "thrown",
+            as they are in C++. When this documentation says that some Python exception
+            is "raised" in the context of C++ code, it means that the corresponding
+            Python exception is set via the <ulink url="http://www.python.org/doc/current/api/exceptionHandling.html">Python/'C'
+            API</ulink>, and <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">throw_error_already_set</phrase><phrase role="special">()</phrase></computeroutput> is called.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>POD <anchor id="pod"/></term>
+        <listitem>
+          <para>
+            A technical term from the C++ standard. Short for "Plain Ol'Data":
+            A POD-struct is an aggregate class that has no non-static data members
+            of type pointer to member, non-POD-struct, non-POD-union (or array of
+            such types) or reference, and has no user-defined copy assign- ment operator
+            and no user-defined destructor. Similarly, a POD-union is an aggregate
+            union that has no non-static data members of type pointer to member,
+            non-POD-struct, non-POD-union (or array of such types) or reference,
+            and has no user-defined copy assignment operator and no user-defined
+            destructor. A POD class is a class that is either a POD-struct or a POD-union.
+            An aggregate is an array or a class (clause 9) with no user-declared
+            constructors (12.1), no private or protected non-static data members
+            (clause 11), no base classes (clause 10), and no virtual functions (10.3).
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>ODR <anchor id="odr"/></term>
+        <listitem>
+          <para>
+            The "One Definition Rule", which says that any entity in a
+            C++ program must have the same definition in all translation units (object
+            files) which make up a program.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </chapter>
+</book>

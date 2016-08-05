@@ -1,0 +1,27 @@
+file /home/travis/build/stefanseefeld/boost.python/SConstruct,line 59:
+	Configure(confdir = bin.SCons/gcc-4.8.5)
+scons: Configure: Checking for Python...
+bin.SCons/gcc-4.8.5/conftest_0.cpp <-
+  |
+  |// If defined, enforces linking againg PythonXXd.lib, which
+  |// is usually not included in Python environments.
+  |#undef _DEBUG
+  |#include "Python.h"
+  |int main()
+  |{
+  |  Py_Initialize();
+  |  Py_Finalize();
+  |  return 0;
+  |}
+  |
+g++ -o bin.SCons/gcc-4.8.5/conftest_0.o -c -ftemplate-depth-128 -Wall -I/opt/python/2.7.10/include/python2.7 bin.SCons/gcc-4.8.5/conftest_0.cpp
+g++ -o bin.SCons/gcc-4.8.5/conftest_0 -Xlinker -export-dynamic bin.SCons/gcc-4.8.5/conftest_0.o -L/opt/python/2.7.10/lib -lpython2.7 -lpthread -ldl -lutil
+scons: Configure: yes
+
+scons: Configure: Checking for Boost...
+bin.SCons/gcc-4.8.5/conftest_1.cpp <-
+  |#include <boost/config.hpp>
+g++ -o bin.SCons/gcc-4.8.5/conftest_1.o -c -ftemplate-depth-128 -Wall -I/opt/python/2.7.10/include/python2.7 bin.SCons/gcc-4.8.5/conftest_1.cpp
+scons: Configure: yes
+
+
