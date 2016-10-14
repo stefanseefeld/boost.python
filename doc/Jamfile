@@ -20,6 +20,37 @@ project python/doc
 import boostbook ;
 import quickbook ;
 import docutils ;
+import notfile ;
+import path ;
+import project ;
+
+rule numpy ( )
+{
+  ECHO building numpy docs ;
+  local project = [ project.current ] ;
+  build-dir = [ $(project).get build-dir ] ;
+  # copy the entire source tree into the build directory...
+  sources = $(here)/numpy/Makefile ;
+  sources += [ path.glob-tree $(here)/numpy : *.* ] ;
+  install sources
+    : $(sources)
+    : <location>$(build-dir)
+      <install-source-root>$(here) ;
+  # ...run the sphinx build tool...
+  local sphinx-build = cd \"$(build-dir)/numpy\" "&&" make 2>&1 ;
+  sphinx-build = $(sphinx-build:J=" ") ;
+  ECHO running sphinx-build ;
+  result = [ SHELL $(sphinx-build) ] ;
+  # TODO: check result for errors.
+  # ...and copy the result back.
+  result = [ path.glob-tree $(build-dir)/numpy/_build/html
+               : *.html *.js *.css *.png *.gif ] ;
+  install output
+    : $(result)
+    : <location>$(here)/html/numpy
+      <install-source-root>$(build-dir)/numpy/_build/html ;
+}
+
 
 boostbook python : python.qbk
 	  : <format>html:<name>$(here)/html
@@ -47,6 +78,8 @@ html article : article.rst
          : <location>html
 	   <docutils-html>"--link-stylesheet --traceback --trim-footnote-reference-space --footnote-references=superscript --stylesheet=rst.css"
             ;
+
+numpy ;
 
 ###############################################################################
 alias boostdoc ;
