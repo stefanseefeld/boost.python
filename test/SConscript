@@ -108,7 +108,7 @@ if env['CXX11']:
         tests+=env.BPLTest(*test)
 else:
     for test in [
-        ('polymorphism2_auto_ptr',),
+        #('polymorphism2_auto_ptr',),
         #('auto_ptr',),
     ]:
         tests+=env.BPLTest(*test)
