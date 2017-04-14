@@ -41,7 +41,7 @@ env.AddMethod(BPLTest)
 env.AppendENVPath('PYTHONPATH', Dir('.').path)
 
 tests=[]
-tests+=env.BPLTest('crossmod_exception', ['crossmod_exception_a', 'crossmod_exception_b'])
+#tests+=env.BPLTest('crossmod_exception', ['crossmod_exception_a', 'crossmod_exception_b'])
 
 for test in [('injected',),
              ('properties',),
@@ -54,7 +54,7 @@ for test in [('injected',),
              ('polymorphism2',),
              ('wrapper_held_type',),
              ('minimal',),
-             #('args',),
+             ('args',),
              ('raw_ctor',),
              ('exception_translator',),
              ('test_enum', ['enum_ext']),
@@ -98,7 +98,8 @@ for test in [('injected',),
              ('pytype_function',),
              ('vector_indexing_suite',),
              ('pointer_vector',)]:
-    tests+=env.BPLTest(*test)
+    #tests+=env.BPLTest(*test)
+    pass
 
 if env['CXX11']:
     for test in [
@@ -108,7 +109,7 @@ if env['CXX11']:
 else:
     for test in [
         ('polymorphism2_auto_ptr',),
-        ('auto_ptr',),
+        #('auto_ptr',),
     ]:
         tests+=env.BPLTest(*test)
 
@@ -149,9 +150,9 @@ tests+=env.BoostCompileTest('select_holder')
 tests+=env.BoostRunTest('select_from_python_test', LIBS=ELIBS)
 tests+=env.BoostCompileTest('select_arg_to_python_test')
 
-if platform.system() == 'Windows':
-    tests+=env.BPLTest('calling_conventions')
-    tests+=env.BPLTest('calling_conventions_mf')
+#if platform.system() == 'Windows':
+#    tests+=env.BPLTest('calling_conventions')
+#    tests+=env.BPLTest('calling_conventions_mf')
 
 if env['NUMPY']:
     numpy_env = env.Clone()
