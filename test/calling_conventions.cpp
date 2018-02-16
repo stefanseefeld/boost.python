@@ -17,9 +17,11 @@
 //------------------------------------------------------------------------------
 // this section is the main body of the test extension module
 
-#define BOOST_PYTHON_ENABLE_CDECL
-#define BOOST_PYTHON_ENABLE_STDCALL
-#define BOOST_PYTHON_ENABLE_FASTCALL
+#if _WIN32
+# define BOOST_PYTHON_ENABLE_CDECL
+# define BOOST_PYTHON_ENABLE_STDCALL
+# define BOOST_PYTHON_ENABLE_FASTCALL
+#endif
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/python.hpp>
@@ -33,13 +35,15 @@ using namespace boost::python;
 #include "calling_conventions.cpp"
 #undef TESTED_CALLING_CONVENTION
 
-#define TESTED_CALLING_CONVENTION __stdcall
-#include "calling_conventions.cpp"
-#undef TESTED_CALLING_CONVENTION
+#if _WIN32
+# define TESTED_CALLING_CONVENTION __stdcall
+# include "calling_conventions.cpp"
+# undef TESTED_CALLING_CONVENTION
 
-#define TESTED_CALLING_CONVENTION __fastcall
-#include "calling_conventions.cpp"
-#undef TESTED_CALLING_CONVENTION
+# define TESTED_CALLING_CONVENTION __fastcall
+# include "calling_conventions.cpp"
+# undef TESTED_CALLING_CONVENTION
+#endif
 
 #undef TEST_DECLARE_FUNCTIONS 
 
@@ -54,13 +58,15 @@ BOOST_PYTHON_MODULE( calling_conventions_ext )
 #include "calling_conventions.cpp"
 #undef TESTED_CALLING_CONVENTION
 
-#define TESTED_CALLING_CONVENTION __stdcall
-#include "calling_conventions.cpp"
-#undef TESTED_CALLING_CONVENTION
+#if _WIN32
+# define TESTED_CALLING_CONVENTION __stdcall
+# include "calling_conventions.cpp"
+# undef TESTED_CALLING_CONVENTION
 
-#define TESTED_CALLING_CONVENTION __fastcall
-#include "calling_conventions.cpp"
-#undef TESTED_CALLING_CONVENTION
+# define TESTED_CALLING_CONVENTION __fastcall
+# include "calling_conventions.cpp"
+# undef TESTED_CALLING_CONVENTION
+#endif
 
 #undef TEST_WRAP_FUNCTIONS
 
