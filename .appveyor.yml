@@ -12,19 +12,13 @@ environment:
     # a later point release.
     # See: http://www.appveyor.com/docs/installed-software#python
 
-    - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.x" # currently 2.7.9
-      PYTHON_ARCH: "32"
-      MSVC: "14.0"
-      ARCH: x86
-
     - PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
       MSVC: "12.0"
       ARCH: x86_64
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
@@ -70,16 +64,20 @@ install:
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
+
+  #curl -LfsS -o faber.tar.gz https://github.com/stefanseefeld/faber/archive/snapshot/2018-04-08.tar.gz
+  #tar xf faber.tar.gz
+  #CD faber-snapshot-2018-04-08
+
   - |
-     curl -LfsS -o faber.tar.gz https://github.com/stefanseefeld/faber/archive/snapshot/2018-04-08.tar.gz
-     tar xf faber.tar.gz
-     CD faber-snapshot-2018-04-08
+     git clone --single-branch --branch windows https://github.com/stefanseefeld/faber.git
+     CD faber
      python setup.py install
      CD ..
   # report the available MSVC compilers
   - faber --info=tools cxx
   - easy_install sphinx
-  - pip install numpy
+  - python -m pip install numpy
 
 build_script:
   - faber --with-boost-include=%BOOST_PREFIX% target.arch=%ARCH% msvc.version=%MSVC%
