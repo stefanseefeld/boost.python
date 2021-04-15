@@ -63,17 +63,19 @@
               Python container to behave.
             </li>
 <li class="listitem">
+<p class="simpara">
               Provide default reference semantics for container element indexing
               (<code class="computeroutput"><span class="identifier">__getitem__</span></code>) such
               that c[i] can be mutable. Require:
+            </p>
 <pre class="programlisting"><span class="identifier">val</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">[</span><span class="identifier">i</span><span class="special">]</span>
 <span class="identifier">c</span><span class="special">[</span><span class="identifier">i</span><span class="special">].</span><span class="identifier">m</span><span class="special">()</span>
 <span class="identifier">val</span> <span class="special">==</span> <span class="identifier">c</span><span class="special">[</span><span class="identifier">i</span><span class="special">]</span>
 </pre>
-              <p>
-                where m is a non-const (mutating) member function (method).
-              </p>
-            </li>
+<p class="simpara">
+              where m is a non-const (mutating) member function (method).
+            </p>
+</li>
 <li class="listitem">
               Return safe references from <code class="computeroutput"><span class="identifier">__getitem__</span></code>
               such that subsequent adds and deletes to and from the container will
@@ -160,8 +162,8 @@
 <p>
                 Iterator objects also need to implement this method; they are required
                 to return themselves. For more information on iterator objects, see
-                <a href="http://www.python.org/doc/current/lib/typeiter.html" target="_top">Iterator
-                Types</a> in the <a href="http://www.python.org/doc/current/lib/lib.html" target="_top">Python
+                <a href="https://docs.python.org/3/library/stdtypes.html#iterator-types" target="_top">Iterator
+                Types</a> in the <a href="https://docs.python.org/3/library/index.html" target="_top">Python
                 Library Reference</a>.
               </p>
 </dd>

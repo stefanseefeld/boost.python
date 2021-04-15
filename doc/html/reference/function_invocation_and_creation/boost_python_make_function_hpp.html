@@ -69,16 +69,24 @@
                 from the first Python argument, and subsequent Python arguments will
                 be used as the arguments to f.
               </p>
-<p>
-                * If policies are supplied, it will be applied to the function as
-                described here. * If keywords are supplied, the keywords will be
-                applied in order to the final arguments of the resulting function.
-                * If Signature is supplied, it should be an instance of an MPL front-extensible
-                sequence representing the function's return type followed by its
-                argument types. Pass a Signature when wrapping function object types
-                whose signatures can't be deduced, or when you wish to override the
-                types which will be passed to the wrapped function.
-              </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+                    If policies are supplied, it will be applied to the function
+                    as described here.
+                  </li>
+<li class="listitem">
+                    If keywords are supplied, the keywords will be applied in order
+                    to the final arguments of the resulting function.
+                  </li>
+<li class="listitem">
+                    If Signature is supplied, it should be an instance of an MPL
+                    front-extensible sequence representing the function's return
+                    type followed by its argument types. Pass a Signature when wrapping
+                    function object types whose signatures can't be deduced, or when
+                    you wish to override the types which will be passed to the wrapped
+                    function.
+                  </li>
+</ul></div>
 </dd>
 <dt><span class="term">Returns</span></dt>
 <dd><p>
